@@ -33,7 +33,7 @@ Then in your view:
   </code>
 </pre>
 
-You can specify an argument for a separator, but it defaults to <code>" &raquo; "</code>
+You can specify an argument for a separator, but it defaults to <code>" &raquo; "</code>. A crumb with a nil link will just output plain text.
 
 h2. Notes
 
