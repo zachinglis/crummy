@@ -1,11 +1,11 @@
 module Crummy
   module ControllerMethods
     module ClassMethods
-      def add_crumb(name, url = nil)
-        before_filter options do |instance|
-          raise ArgumentError, "Cannot pass url and use block" if url && block_given?
+      def add_crumb(name, url = nil, options = {})
+        raise ArgumentError, "Cannot pass url and use block" if url && block_given?
+        before_filter(options) do |instance|
           url = yield instance if block_given?
-          
+          url = instance.send(:url_for, name) if name.respond_to?("to_param") && url.nil?
           instance.add_crumb(name, url)
         end
       end
@@ -53,6 +53,7 @@ end
 
 # class EventsController < ApplicationController
 #   add_crumb "Home", '/' # really in application.rb
+#   add_crumb @events
 #   add_crumb "Events" { |instance| instance.events_path }
 # 
 #   def index
