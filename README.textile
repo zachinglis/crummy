@@ -16,6 +16,7 @@ In your controllers you may add_crumb either like a before_filter or within a me
     
     class BusinessController < ApplicationController
       add_crumb("Businesses") { |instance| instance.send :businesses_path }
+      add_crumb("Businesses") { |instance| instance.send :businesses_path }
   
       def show
         add_crumb @business.display_name, @business
@@ -42,6 +43,7 @@ h2. Todo
 
 * Port over rspecs from project to plugin (Fully tested in a project)
 * Accept instances of models as a single argument
+* Allow for variables in names. (The workaround is to do your own before_filter for that currently)
 
 h2. Credits
 
