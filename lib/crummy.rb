@@ -35,13 +35,17 @@ module Crummy
   
   module ViewMethods
     def crumbs
-      @_crumbs || []
+      @_crumbs ||= [] # Give me something to push to
     end
     
-    def render_crumbs
+    def add_crumb(name, url='')
+      crumbs.push [name, url]
+    end
+    
+    def render_crumbs(seperator=" &raquo; ")
       crumbs.collect do |crumb|
         crumb_to_html crumb
-      end
+      end * seperator
     end
     
     def crumb_to_html(crumb)

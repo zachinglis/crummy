@@ -4,11 +4,13 @@ h2. Introduction
 
 Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 
-
 h2. Example
 
-Example goes here.
 
+
+h2. Todo
+
+* Accept instances of models as a single argument
 
 h2. Credits
 
