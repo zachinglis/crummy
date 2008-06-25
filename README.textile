@@ -6,10 +6,29 @@ Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 
 h2. Example
 
+In your controllers you may add_crumb either like a before_filter or within a method (It is also available to views).
 
+<pre>
+  <code>
+    class ApplicationController
+      add_crumb "Home", '/'
+    end
+    
+    class BusinessController < ApplicationController
+      add_crumb("Business") { |instance| instance.business_path }
+  
+      def show
+        add_crumb @business.display_name, @business
+      end
+    end
+  </code>
+</pre>
+
+The variable set is set to @_crumbs not to conflict with your code.
 
 h2. Todo
 
+* Port over rspecs from project to plugin (Fully tested in a project)
 * Accept instances of models as a single argument
 
 h2. Credits
