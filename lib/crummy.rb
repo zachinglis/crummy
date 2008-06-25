@@ -6,6 +6,7 @@ module Crummy
       #   add_crumb("Home", "/")
       #   add_crumb("Business") { |instance| instance.business_path }
       #
+      # Works like a before_filter so +:only+ and +except+ both work.
       def add_crumb(name, url = nil, options = {})
         raise ArgumentError, "Cannot pass url and use block" if url && block_given?
         before_filter(options) do |instance|
