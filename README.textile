@@ -32,7 +32,7 @@ Then in your view:
   </code>
 </pre>
 
-You can specify an argument for a seperator, but it defaults to <code>" &raquo; "</code>
+You can specify an argument for a separator, but it defaults to <code>" &raquo; "</code>
 
 h2. Notes
 
