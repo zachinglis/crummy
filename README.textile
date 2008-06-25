@@ -24,6 +24,18 @@ In your controllers you may add_crumb either like a before_filter or within a me
   </code>
 </pre>
 
+Then in your view:
+
+<pre>
+  <code>
+    <%= render_crumbs %>
+  </code>
+</pre>
+
+You can specify an argument for a seperator, but it defaults to <code>" &raquo; "</code>
+
+h2. Notes
+
 The variable set is set to @_crumbs not to conflict with your code.
 
 h2. Todo

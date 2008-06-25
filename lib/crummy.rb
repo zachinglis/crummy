@@ -58,7 +58,7 @@ module Crummy
     #
     #   render_crumbs         #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
     #
-    # The only option is for the seperator text. It does not assume you want spaces on either side so you must specify. Defaults to +&raquo;+
+    # The only argument is for the seperator text. It does not assume you want spaces on either side so you must specify. Defaults to +&raquo;+
     #
     #   render_crumbs(" . ")  #=> <a href="/">Home</a> . <a href="/businesses">Businesses</a>
     #
