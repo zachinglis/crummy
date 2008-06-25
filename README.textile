@@ -15,7 +15,7 @@ In your controllers you may add_crumb either like a before_filter or within a me
     end
     
     class BusinessController < ApplicationController
-      add_crumb("Business") { |instance| instance.business_path }
+      add_crumb("Businesses") { |instance| instance.send :businesses_path }
   
       def show
         add_crumb @business.display_name, @business
