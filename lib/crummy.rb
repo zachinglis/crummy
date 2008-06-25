@@ -5,7 +5,7 @@ module Crummy
         raise ArgumentError, "Cannot pass url and use block" if url && block_given?
         before_filter(options) do |instance|
           url = yield instance if block_given?
-          url = instance.send(:url_for, name) if name.respond_to?("to_param") && url.nil?
+          # FIXME: url = instance.url_for(name) if name.respond_to?("to_param") && url.nil?
           instance.add_crumb(name, url)
         end
       end
