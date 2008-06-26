@@ -4,6 +4,10 @@ h2. Introduction
 
 Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 
+h2. Install
+
+To install, type <code>script/plugin install git://github.com/zachinglis/crummy.git</code>
+
 h2. Example
 
 In your controllers you may add_crumb either like a before_filter or within a method (It is also available to views).
