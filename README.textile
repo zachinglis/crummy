@@ -48,6 +48,7 @@ h2. Todo
 * Port over rspecs from project to plugin (Fully tested in a project)
 * Accept instances of models as a single argument
 * Allow for variables in names. (The workaround is to do your own before_filter for that currently)
+* Use Hanna for rdoc (mislav/rdoc)
 
 h2. Credits
 
