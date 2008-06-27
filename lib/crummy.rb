@@ -7,11 +7,19 @@ module Crummy
       #   add_crumb("Business") { |instance| instance.business_path }
       #
       # Works like a before_filter so +:only+ and +except+ both work.
-      def add_crumb(name, url = nil, options = {})
+      def add_crumb(name=nil, url=nil, options = {})
+        raise ArgumentError, "Need more arguments" unless name or options[:record] or block_given?
         raise ArgumentError, "Cannot pass url and use block" if url && block_given?
         before_filter(options) do |instance|
           url = yield instance if block_given?
+          
+          record = instance.instance_variable_get("@#{name}") unless url or block_given?
+          if record and record.respond_to? :to_param
+            name, url = record.to_s, instance.url_for(record)
+          end
+        
           # FIXME: url = instance.url_for(name) if name.respond_to?("to_param") && url.nil?
+          # FIXME: Add ||= for the name, url above
           instance.add_crumb(name, url)
         end
       end
