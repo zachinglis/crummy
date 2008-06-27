@@ -41,7 +41,7 @@ You can specify an argument for a separator, but it defaults to <code>" &raquo; 
 
 h2. Notes
 
-The variable set is set to @_crumbs not to conflict with your code.
+The variable set is set to <code>@_crumbs</code> not to conflict with your code.
 
 h2. Todo
 
