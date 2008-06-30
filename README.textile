@@ -20,7 +20,7 @@ In your controllers you may add_crumb either like a before_filter or within a me
     
     class BusinessController < ApplicationController
       add_crumb("Businesses") { |instance| instance.send :businesses_path }
-      add_crumb("Comments") { |instance| instance.send :businesses_path }, :only => "comments"
+      add_crumb("Comments", :only => "comments") { |instance| instance.send :businesses_path }
       before_filter :load_comment, :only => "show"
       add_crumb :comment, :only => "show"
   
