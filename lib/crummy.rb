@@ -31,7 +31,7 @@ module Crummy
       #   add_crumb("Home", "/")
       #   add_crumb("Business") { |instance| instance.business_path }
       #
-      def add_crumb(name, url='')
+      def add_crumb(name, url=nil)
         crumbs.push [name, url]
       end
 
@@ -59,7 +59,7 @@ module Crummy
     end
     
     # Add a crumb to the +crumbs+ array
-    def add_crumb(name, url='')
+    def add_crumb(name, url=nil)
       crumbs.push [name, url]
     end
     
