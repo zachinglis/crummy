@@ -7,7 +7,7 @@ module Crummy
       #   add_crumb("Business") { |instance| instance.business_path }
       #
       # Works like a before_filter so +:only+ and +except+ both work.
-      def add_crumb(name=nil, *args)
+      def add_crumb(name, *args)
         options = args.extract_options!
         url = args.first
         raise ArgumentError, "Need more arguments" unless name or options[:record] or block_given?
