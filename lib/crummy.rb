@@ -72,15 +72,15 @@ module Crummy
     #
     #   render_crumbs(" . ")  #=> <a href="/">Home</a> . <a href="/businesses">Businesses</a>
     #
-    def render_crumbs(seperator=" &raquo; ")
+    def render_crumbs(seperator=" &raquo; ", links = true)
       crumbs.collect do |crumb|
-        crumb_to_html crumb
+        crumb_to_html crumb, links
       end * seperator
     end
     
-    def crumb_to_html(crumb)
+    def crumb_to_html(crumb, links)
       name, url = crumb
-      url ? link_to(name, url) : name
+      url && links ? link_to(name, url) : name
     end
   end
 end
