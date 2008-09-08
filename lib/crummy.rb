@@ -82,5 +82,17 @@ module Crummy
       name, url = crumb
       url && links ? link_to(name, url) : name
     end
+    
+    def render_crumbs_to_xml(seperator=" &raquo; ", links = true)
+      crumbs.collect do |crumb|
+        crumb_to_xml crumb, links
+      end * ''
+    end
+    
+    def crumb_to_xml(crumb, links)
+      name, url = crumb
+      url && links ? "<crumb href=\"#{url}\">#{name}</crumb>" : "<crumb>#{name}</crumb>"
+    end
+    
   end
 end
