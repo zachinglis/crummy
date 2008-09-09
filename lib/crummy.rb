@@ -72,10 +72,25 @@ module Crummy
     #
     #   render_crumbs(" . ")  #=> <a href="/">Home</a> . <a href="/businesses">Businesses</a>
     #
-    def render_crumbs(seperator=" &raquo; ", links = true)
-      crumbs.collect do |crumb|
-        crumb_to_html crumb, links
-      end * seperator
+    def render_crumbs(options = {})
+      options[:format] = :html if options[:format] == nil
+      if options[:seperator] == nil
+        options[:seperator] = " &raquo; " if options[:format] == :html 
+        options[:seperator] = "crumb" if options[:format] == :xml 
+      end
+      options[:links] = true if options[:links] == nil
+      case options[:format]
+      when :html
+        crumbs.collect do |crumb|
+          crumb_to_html crumb, options[:links]
+        end * options[:seperator]
+      when :xml
+        crumbs.collect do |crumb|
+          crumb_to_xml crumb, options[:links], options[:seperator]
+        end * ''
+      else
+        raise "Unknown breadcrumb output format"
+      end
     end
     
     def crumb_to_html(crumb, links)
@@ -83,15 +98,9 @@ module Crummy
       url && links ? link_to(name, url) : name
     end
     
-    def render_crumbs_to_xml(seperator=" &raquo; ", links = true)
-      crumbs.collect do |crumb|
-        crumb_to_xml crumb, links
-      end * ''
-    end
-    
-    def crumb_to_xml(crumb, links)
+    def crumb_to_xml(crumb, links, seperator)
       name, url = crumb
-      url && links ? "<crumb href=\"#{url}\">#{name}</crumb>" : "<crumb>#{name}</crumb>"
+      url && links ? "<#{seperator} href=\"#{url}\">#{name}</#{seperator}>" : "<#{seperator}>#{name}</#{seperator}>"
     end
     
   end
