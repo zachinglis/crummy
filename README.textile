@@ -1,4 +1,4 @@
-h1. Crummy
+ h1. Crummy
 
 h2. Introduction
 
@@ -6,7 +6,7 @@ Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 
 h2. Install
 
-To install, type <code>script/plugin install git://github.com/weibel/crummy.git</code>
+To install, type <code>script/plugin install git://github.com/zachinglis/crummy.git</code>
 
 h2. Example
 
