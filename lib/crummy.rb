@@ -64,10 +64,21 @@ module Crummy
       crumbs.push [name, url]
     end
     
-    # Render the list of crumbs
+    # Render the list of crumbs as either html or xml
     #
-    #   render_crumbs         #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
-    #
+    # Takes 3 options:
+    # The output format. Can either be xml or html. Default :html
+    #   :format => (:html|:xml) 
+    # The seperator text. It does not assume you want spaces on either side so you must specify. Default +&raquo;+ for :html and +crumb+ for xml
+    #   :seperator => string  
+    # Render links in the output. Default +true+
+    #   :link => boolean        
+    # 
+    #   Examples:
+    #   render_crumbs                     #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
+    #   render_crumbs :seperator => ' | ' #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
+    #   render_crumbs :format => :xml     #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
+    #   
     # The only argument is for the seperator text. It does not assume you want spaces on either side so you must specify. Defaults to +&raquo;+
     #
     #   render_crumbs(" . ")  #=> <a href="/">Home</a> . <a href="/businesses">Businesses</a>
