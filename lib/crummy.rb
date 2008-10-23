@@ -14,6 +14,7 @@ module Crummy
         raise ArgumentError, "Cannot pass url and use block" if url && block_given?
         before_filter(options) do |instance|
           url = yield instance if block_given?
+          url = instance.send url if url.is_a? Symbol
           record = instance.instance_variable_get("@#{name}") unless url or block_given?
           if record and record.respond_to? :to_param
             name, url = record.to_s, instance.url_for(record)
