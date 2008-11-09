@@ -49,7 +49,7 @@ render_crumbs renders the list of crumbs as either html or xml
 
 It takes 3 options
 
-The output format. Can either be xml or html. Defaults to :html
+The output format. Can either be :xml or :html. Defaults to :html
 
 <code>:format => (:html|:xml)</code>
 
@@ -74,7 +74,7 @@ A crumb with a nil link will just output plain text.
 
 h2. Notes
 
-The variable set is set to @_crumbs not to conflict with your code.
+The variable set is set to @_crumbs as to not conflict with your code.
 
 h2. Todo
 
