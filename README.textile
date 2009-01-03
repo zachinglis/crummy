@@ -81,7 +81,7 @@ The seperator text. It does not assume you want spaces on either side so you mus
 
 Render links in the output. Defaults to +true+
 
-<code>:link => boolean</code>        
+<code>:links => boolean</code>        
 
 h3. Examples
 
