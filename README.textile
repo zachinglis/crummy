@@ -1,4 +1,4 @@
- h1. Crummy
+h1. Crummy
 
 h2. Introduction
 
@@ -6,7 +6,29 @@ Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 
 h2. Install
 
-To install, type <code>script/plugin install git://github.com/zachinglis/crummy.git</code>
+The gem is hosted on gemcutter, so if you haven’t already, add it as a gem source:
+
+<pre>
+  <code>
+    gem sources -a http://gemcutter.org/
+  </code>
+</pre>
+
+Then install the Formtastic gem:
+
+<pre>
+  <code>
+    gem install crummy
+  </code>
+</pre>
+
+You can also install it as a Rails plugin:
+
+<pre>
+  <code>
+    script/plugin install git://github.com/zachinglis/crummy.git
+  </code>
+</pre>
 
 h2. Example
 
