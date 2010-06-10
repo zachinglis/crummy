@@ -96,7 +96,8 @@ module Crummy
         crumb_string = crumbs.collect do |crumb|
           crumb_to_html crumb, options[:links]
         end * options[:seperator]
-        crumb_string.html_safe
+        crumb_string = crumb_string.html_safe if crumb_string.respond_to?(:html_safe)
+        crumb_string
       when :xml
         crumbs.collect do |crumb|
           crumb_to_xml crumb, options[:links], options[:seperator]
