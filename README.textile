@@ -14,7 +14,7 @@ The gem is hosted on gemcutter, so if you haven’t already, add it as a gem sou
   </code>
 </pre>
 
-Then install the Formtastic gem:
+Then install the Crummy gem:
 
 <pre>
   <code>
