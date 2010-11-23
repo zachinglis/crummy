@@ -22,11 +22,13 @@ Then install the Crummy gem:
   </code>
 </pre>
 
-You can also install it as a Rails plugin:
+h3. Rails 3 / Bundler.
+
+Simply add gem dependency to your Gemfile:
 
 <pre>
   <code>
-    script/plugin install git://github.com/zachinglis/crummy.git
+    gem "crummy", ">= 1.0.1"
   </code>
 </pre>
 
@@ -65,7 +67,7 @@ Then in your view:
   </code>
 </pre>
 
-h2. Options for render_crumb_
+h2. Options for render_crumbs
 
 render_crumbs renders the list of crumbs as either html or xml
 
