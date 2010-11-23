@@ -13,6 +13,7 @@ begin
     gem.email = "zach@lt3media.com"
     gem.homepage = "http://github.com/zachinglis/crummy"
     gem.authors = ["Zach Inglis"]
+    gem.files = FileList['lib/**/*.rb','tasks/*.rake','init.rb','MIT-LICENSE','Rakefile','README.textile','VERSION', '.gitignore']
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
