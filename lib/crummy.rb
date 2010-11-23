@@ -1,5 +1,5 @@
 module Crummy
-  if defined?(Rails)
+  if defined?(Rails::Railtie)
     require 'crummy/railtie'
   else
     require 'crummy/action_controller'
