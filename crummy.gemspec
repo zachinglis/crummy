@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{crummy}
-  s.version = "1.0.1"
+  s.version = "1.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Zach Inglis"]
-  s.date = %q{2010-11-23}
+  s.date = %q{2010-12-12}
   s.description = %q{Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.}
   s.email = %q{zach@lt3media.com}
   s.extra_rdoc_files = [
@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "lib/crummy/action_controller.rb",
     "lib/crummy/action_view.rb",
     "lib/crummy/railtie.rb",
+    "lib/crummy/standard_renderer.rb",
     "tasks/crummy_tasks.rake"
   ]
   s.homepage = %q{http://github.com/zachinglis/crummy}
