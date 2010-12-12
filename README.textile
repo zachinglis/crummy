@@ -115,5 +115,6 @@ h2. Credits
 * "Przemysław Kowalczyk":http://szeryf.wordpress.com/2008/06/13/easy-and-flexible-breadcrumbs-for-rails/ - feature ideas
 * "Sharad Jain":http://github.com/sjain
 * "Max Riveiro":http://github.com/kavu
+* "Kamil K. Lemański":http://kml.jogger.pl
 
 *Copyright (c) 2010 Zach Inglis, released under the MIT license*
