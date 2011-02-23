@@ -3,6 +3,7 @@
 module Crummy
   class StandardRenderer
     include ActionView::Helpers::UrlHelper
+    include ActionView::Helpers::TagHelper
 
     # Render the list of crumbs as either html or xml
     #
