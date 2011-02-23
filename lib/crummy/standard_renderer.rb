@@ -3,7 +3,7 @@
 module Crummy
   class StandardRenderer
     include ActionView::Helpers::UrlHelper
-    include ActionView::Helpers::TagHelper
+    include ActionView::Helpers::TagHelper unless self.included_modules.include?(TagHelper)
 
     # Render the list of crumbs as either html or xml
     #
