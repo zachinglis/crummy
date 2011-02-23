@@ -9,37 +9,37 @@ module Crummy
     # Takes 3 options:
     # The output format. Can either be xml or html. Default :html
     #   :format => (:html|:xml) 
-    # The seperator text. It does not assume you want spaces on either side so you must specify. Default +&raquo;+ for :html and +crumb+ for xml
-    #   :seperator => string  
+    # The separator text. It does not assume you want spaces on either side so you must specify. Default +&raquo;+ for :html and +crumb+ for xml
+    #   :separator => string  
     # Render links in the output. Default +true+
     #   :link => boolean        
     # 
     #   Examples:
     #   render_crumbs                     #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
-    #   render_crumbs :seperator => ' | ' #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
+    #   render_crumbs :separator => ' | ' #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
     #   render_crumbs :format => :xml     #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
     #   
-    # The only argument is for the seperator text. It does not assume you want spaces on either side so you must specify. Defaults to +&raquo;+
+    # The only argument is for the separator text. It does not assume you want spaces on either side so you must specify. Defaults to +&raquo;+
     #
     #   render_crumbs(" . ")  #=> <a href="/">Home</a> . <a href="/businesses">Businesses</a>
     #
     def render_crumbs(crumbs, options = {})
       options[:format] = :html if options[:format] == nil
-      if options[:seperator] == nil
-        options[:seperator] = " &raquo; " if options[:format] == :html 
-        options[:seperator] = "crumb" if options[:format] == :xml 
+      if options[:separator] == nil
+        options[:separator] = " &raquo; " if options[:format] == :html 
+        options[:separator] = "crumb" if options[:format] == :xml 
       end
       options[:links] = true if options[:links] == nil
       case options[:format]
       when :html
         crumb_string = crumbs.collect do |crumb|
           crumb_to_html crumb, options[:links]
-        end * options[:seperator]
+        end * options[:separator]
         crumb_string = crumb_string.html_safe if crumb_string.respond_to?(:html_safe)
         crumb_string
       when :xml
         crumbs.collect do |crumb|
-          crumb_to_xml crumb, options[:links], options[:seperator]
+          crumb_to_xml crumb, options[:links], options[:separator]
         end * ''
       else
         raise ArgumentError, "Unknown breadcrumb output format"
@@ -53,9 +53,9 @@ module Crummy
       url && links ? link_to(name, url) : name
     end
 
-    def crumb_to_xml(crumb, links, seperator)
+    def crumb_to_xml(crumb, links, separator)
       name, url = crumb
-      url && links ? "<#{seperator} href=\"#{url}\">#{name}</#{seperator}>" : "<#{seperator}>#{name}</#{seperator}>"
+      url && links ? "<#{separator} href=\"#{url}\">#{name}</#{separator}>" : "<#{separator}>#{name}</#{separator}>"
     end
   end
 end
