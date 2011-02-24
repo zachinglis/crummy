@@ -1,0 +1,6 @@
+1.1.1
+
+* [FIXED] issue with undefined method escape_once for Rails 3.
+* [FIXED] spelling of separator
+
+1.1.0
