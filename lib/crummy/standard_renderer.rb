@@ -16,10 +16,12 @@ module Crummy
     #   :link => boolean        
     # 
     #   Examples:
-    #   render_crumbs                     #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
-    #   render_crumbs :separator => ' | ' #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
-    #   render_crumbs :format => :xml     #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
+    #   render_crumbs                         #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
+    #   render_crumbs :separator => ' | '     #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
+    #   render_crumbs :format => :xml         #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
+    #   render_crumbs :format => :html_list   #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
     #   
+    # With :format => :html_list you can specify additional params: active_li_class, li_class, ul_class, ul_id
     # The only argument is for the separator text. It does not assume you want spaces on either side so you must specify. Defaults to +&raquo;+
     #
     #   render_crumbs(" . ")  #=> <a href="/">Home</a> . <a href="/businesses">Businesses</a>
@@ -39,15 +41,17 @@ module Crummy
         crumb_string = crumb_string.html_safe if crumb_string.respond_to?(:html_safe)
         crumb_string
       when :html_list
-        #options[:active_li_class] ||= ''
-        #options[:ul_class] ||= ''
-        #options[:ul_id] ||= ''
-        
+        # In html_list format there are no separator, but may be
+        options[:separator] = "" if options[:separator] == nil
+        # Lets set default values for special options of html_list format
+        options[:active_li_class] = "" if options[:active_li_class] == nil
+        options[:li_class] = "" if options[:li_class] == nil
+        options[:ul_class] = "" if options[:ul_class] == nil
+        options[:ul_id] = "" if options[:ul_id] == nil
         crumb_string = crumbs.collect do |crumb|
-          crumb_to_html crumb, options[:links]
+          crumb_to_html_list crumb, options[:links], options[:li_class], options[:active_li_class]
         end * options[:separator]
-        
-        #crumb_string = '<ul class="#{options[:ul_class]}" id="#{options[:ul_id]}">' + crumb_string + '</ul>'
+        crumb_string = "<ul class=\"#{options[:ul_class]}\" id=\"#{options[:ul_id]}\">" + crumb_string + "</ul>"
         crumb_string = crumb_string.html_safe if crumb_string.respond_to?(:html_safe)
         crumb_string
       when :xml
@@ -66,10 +70,9 @@ module Crummy
       url && links ? link_to(name, url) : name
     end
     
-    def crumb_to_html_list(crumb, links, active_li_class)
+    def crumb_to_html_list(crumb, links, li_class, active_li_class)
       name, url = crumb
-      # url && links ? link_to(name, url) : name
-      url && links ? "<li><a href=\"#{url}\">#{name}</li>" : "<li class="#{active_li_class}"><span>#{name}</span></li>"
+      url && links ? "<li class=\"#{li_class}\"><a href=\"#{url}\">#{name}</a></li>" : "<li class=\"#{active_li_class}\"><span>#{name}</span></li>"
     end
 
     def crumb_to_xml(crumb, links, separator)
