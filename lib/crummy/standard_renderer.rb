@@ -39,15 +39,15 @@ module Crummy
         crumb_string = crumb_string.html_safe if crumb_string.respond_to?(:html_safe)
         crumb_string
       when :html_list
-        options[:active_li_class] ||= ''
-        options[:ul_class] ||= ''
-        options[:ul_id] ||= ''
+        #options[:active_li_class] ||= ''
+        #options[:ul_class] ||= ''
+        #options[:ul_id] ||= ''
         
         crumb_string = crumbs.collect do |crumb|
           crumb_to_html crumb, options[:links]
         end * options[:separator]
         
-        crumb_string = '<ul class="#{options[:ul_class]}" id="#{options[:ul_id]}">' + crumb_string + '</ul>'
+        #crumb_string = '<ul class="#{options[:ul_class]}" id="#{options[:ul_id]}">' + crumb_string + '</ul>'
         crumb_string = crumb_string.html_safe if crumb_string.respond_to?(:html_safe)
         crumb_string
       when :xml
