@@ -28,6 +28,7 @@ module Crummy
     #
     def render_crumbs(crumbs, options = {})
       options[:format] = :html if options[:format] == nil
+      return '' if options[:skip_if_blank] && crumbs.count < 1
       if options[:separator] == nil
         options[:separator] = " &raquo; " if options[:format] == :html 
         options[:separator] = "crumb" if options[:format] == :xml 
