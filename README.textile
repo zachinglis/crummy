@@ -85,6 +85,10 @@ Render links in the output. Defaults to +true+
 
 <code>:links => boolean</code>
 
+<code>:skip_if_blank => true</code>
+
+With this option, output will be blank if there are no breadcrumps.
+
 h3. Examples
 
 <pre>
