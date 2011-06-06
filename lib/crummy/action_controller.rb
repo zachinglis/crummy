@@ -15,14 +15,16 @@ module Crummy
         before_filter(options) do |instance|
           url = yield instance if block_given?
           url = instance.send url if url.is_a? Symbol
-          record = instance.instance_variable_get("@#{name}") unless url or block_given?
-          if record and record.respond_to? :to_param
-            name, url = record.to_s, instance.url_for(record)
+
+          _record = instance.instance_variable_get("@#{name}") unless url or block_given?
+          if _record and _record.respond_to? :to_param
+            instance.add_crumb(_record.to_s, instance.url_for(_record))
+          else 
+            instance.add_crumb(name, url)
           end
         
           # FIXME: url = instance.url_for(name) if name.respond_to?("to_param") && url.nil?
           # FIXME: Add ||= for the name, url above
-          instance.add_crumb(name, url)
         end
       end
     end
