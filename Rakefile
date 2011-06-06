@@ -10,9 +10,9 @@ begin
     gem.name = "crummy"
     gem.summary = %Q{Tasty breadcrumbs!}
     gem.description = %Q{Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.}
-    gem.email = "iempire@iempire.ru"
-    gem.homepage = "http://github.com/shatrov/crummy"
-    gem.authors = ["Kir Shatrov"]
+    gem.email = "zach+crummy@londonmade.co.uk"
+    gem.homepage = "http://github.com/zachinglis/crummy"
+    gem.authors = ["Zach Inglis"]
     gem.files = FileList['lib/**/*.rb','tasks/*.rake','init.rb','MIT-LICENSE','Rakefile','README.textile','VERSION', '.gitignore']
   end
   Jeweler::GemcutterTasks.new
