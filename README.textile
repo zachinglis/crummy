@@ -73,9 +73,9 @@ render_crumbs renders the list of crumbs as either html or xml
 
 It takes 3 options
 
-The output format. Can either be :xml or :html. Defaults to :html
+The output format. Can either be :xml or :html or :html_list. Defaults to :html
 
-<code>:format => (:html|:xml)</code>
+<code>:format => (:html|:html_list|:xml)</code>
 
 The separator text. It does not assume you want spaces on either side so you must specify. Defaults to <code>&raquo;</code> for :html and <code><crumb></code> for :xml
 
@@ -85,16 +85,22 @@ Render links in the output. Defaults to +true+
 
 <code>:links => boolean</code>
 
+<code>:skip_if_blank => true</code>
+
+With this option, output will be blank if there are no breadcrumps.
+
 h3. Examples
 
 <pre>
  <code>
-  render_crumbs                     #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
-  render_crumbs :separator => ' | ' #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
-  render_crumbs :format => :xml     #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
+  render_crumbs                        #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
+  render_crumbs :separator => ' | '    #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
+  render_crumbs :format => :xml        #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
+  render_crumbs :format => :html_list  #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
  </code>
 </pre>
 A crumb with a nil link will just output plain text.
+With :format => :html_list you can specify additional params: :active_li_class, :li_class, :ul_class, :ul_id
 
 h2. Notes
 
@@ -117,5 +123,6 @@ h2. Credits
 * "Max Riveiro":http://github.com/kavu
 * "Kamil K. Lemański":http://kml.jogger.pl
 * "Brian Cobb":http://bcobb.net/
+* "Kir Shatrov":http://shatrov.tk/
 
 *Copyright (c) 2011 Zach Inglis, released under the MIT license*
