@@ -1,3 +1,6 @@
+1.2
+* [ADDED] html_list format option
+
 1.1.1
 
 * [FIXED] issue with undefined method escape_once for Rails 3.
