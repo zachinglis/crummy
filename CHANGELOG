@@ -1,5 +1,6 @@
 1.2
 * [ADDED] html_list format option
+* [FIXED] Bug with Passenger and REE deployments 
 
 1.1.1
 
