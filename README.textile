@@ -6,6 +6,16 @@ Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 
 h2. Install
 
+Simply add gem dependency to your Gemfile:
+
+<pre>
+  <code>
+    gem "crummy", "~> 1.2"
+  </code>
+</pre>
+
+h3. Rails 2
+
 The gem is hosted on gemcutter, so if you haven’t already, add it as a gem source:
 
 <pre>
@@ -18,17 +28,8 @@ Then install the Crummy gem:
 
 <pre>
   <code>
+
     gem install crummy
-  </code>
-</pre>
-
-h3. Rails 3 / Bundler.
-
-Simply add gem dependency to your Gemfile:
-
-<pre>
-  <code>
-    gem "crummy", "~> 1.2"
   </code>
 </pre>
 
