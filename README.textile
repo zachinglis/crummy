@@ -28,7 +28,7 @@ Simply add gem dependency to your Gemfile:
 
 <pre>
   <code>
-    gem "crummy", ">= 1.0.1"
+    gem "crummy", "~> 1.2"
   </code>
 </pre>
 
