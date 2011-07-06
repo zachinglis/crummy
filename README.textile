@@ -6,7 +6,7 @@ Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 
 h2. Install
 
-Simply add gem dependency to your Gemfile:
+Simply add the dependency to your Gemfile:
 
 <pre>
   <code>
@@ -16,15 +16,7 @@ Simply add gem dependency to your Gemfile:
 
 h3. Rails 2
 
-The gem is hosted on gemcutter, so if you haven’t already, add it as a gem source:
-
-<pre>
-  <code>
-    gem sources -a http://gemcutter.org/
-  </code>
-</pre>
-
-Then install the Crummy gem:
+In your terminal, write:
 
 <pre>
   <code>
@@ -100,12 +92,11 @@ h3. Examples
   render_crumbs :format => :html_list  #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
  </code>
 </pre>
-A crumb with a nil link will just output plain text.
+A crumb with a nil argument for the link will output an unlinked crumb.
+
 With :format => :html_list you can specify additional params: :active_li_class, :li_class, :ul_class, :ul_id
 
 h2. Notes
-
-The variable set is set to @_crumbs as to not conflict with your code.
 
 h2. Todo
 
@@ -126,4 +117,4 @@ h2. Credits
 * "Brian Cobb":http://bcobb.net/
 * "Kir Shatrov":http://shatrov.tk/
 
-*Copyright (c) 2011 Zach Inglis, released under the MIT license*
+*Copyright (c) 2008-2011 Zach Inglis, released under the MIT license*
