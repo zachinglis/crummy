@@ -20,7 +20,6 @@ In your terminal, write:
 
 <pre>
   <code>
-
     gem install crummy
   </code>
 </pre>
