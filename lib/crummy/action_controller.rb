@@ -16,9 +16,9 @@ module Crummy
           url = yield instance if block_given?
           url = instance.send url if url.is_a? Symbol
 
-          _record = instance.instance_variable_get("@#{name}") unless url or block_given?
+          _record = instance.instance_variable_get("@#{name}")
           if _record and _record.respond_to? :to_param
-            instance.add_crumb(_record.to_s, instance.url_for(_record))
+            instance.add_crumb(_record.to_s, url || instance.url_for(_record))
           else 
             instance.add_crumb(name, url)
           end
