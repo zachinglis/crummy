@@ -15,6 +15,13 @@ module Crummy
         before_filter(options) do |instance|
           url = yield instance if block_given?
           url = instance.send url if url.is_a? Symbol
+          
+          unless url.nil?
+            if url.kind_of? Enumerable
+              url.map! { |x| x.is_a?(Symbol) ? instance.instance_variable_get("@#{x}") : x }
+            end
+            url = instance.send :url_for, url unless url.is_a? String
+          end
 
           _record = instance.instance_variable_get("@#{name}")
           if _record and _record.respond_to? :to_param
