@@ -4,6 +4,7 @@ module Crummy
       # Add a crumb to the crumbs array.
       #
       #   add_crumb("Home", "/")
+      #   add_crumb(lambda { |instance| instance.business_name }, "/")
       #   add_crumb("Business") { |instance| instance.business_path }
       #
       # Works like a before_filter so +:only+ and +except+ both work.
@@ -15,6 +16,9 @@ module Crummy
         before_filter(options) do |instance|
           url = yield instance if block_given?
           url = instance.send url if url.is_a? Symbol
+
+          # Get the return value of the name if its a proc.
+          name = name.call(instance) if name.is_a?(Proc)
 
           _record = instance.instance_variable_get("@#{name}") unless url or block_given?
           if _record and _record.respond_to? :to_param
