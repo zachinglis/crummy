@@ -27,6 +27,12 @@ module Crummy
           # FIXME: Add ||= for the name, url above
         end
       end
+
+      def clear_crumbs
+        before_filter do |instance|
+          instance.clear_crumbs
+        end
+      end
     end
 
     module InstanceMethods
@@ -37,6 +43,10 @@ module Crummy
       #
       def add_crumb(name, url=nil)
         crumbs.push [name, url]
+      end
+
+      def clear_crumbs
+        crumbs.clear
       end
 
       # Lists the crumbs as an array
