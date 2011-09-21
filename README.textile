@@ -40,6 +40,9 @@ In your controllers you may add_crumb either like a before_filter or within a me
       before_filter :load_comment, :only => "show"
       add_crumb :comment, :only => "show"
 
+      # Example for nested routes:
+      add_crumb(:document) { [:account, :document] }
+
       def show
         add_crumb @business.display_name, @business
       end
