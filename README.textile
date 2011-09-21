@@ -115,6 +115,7 @@ h2. Credits
 * "Kamil K. Lemański":http://kml.jogger.pl
 * "Brian Cobb":http://bcobb.net/
 * "Kir Shatrov":http://shatrov.tk/
-* "sugilog":https://github.com/sugilog
+* "sugilog":http://github.com/sugilog
+* "Trond Arve Nordheim":http://github.com/tanordheim
 
 *Copyright (c) 2008-2011 Zach Inglis, released under the MIT license*
