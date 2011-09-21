@@ -17,9 +17,11 @@ module Crummy
           url = yield instance if block_given?
           url = instance.send url if url.is_a? Symbol
           
-          unless url.nil?
+          if url.present?
             if url.kind_of? Enumerable
-              url.map! { |x| x.is_a?(Symbol) ? instance.instance_variable_get("@#{x}") : x }
+              url.map! do |name|
+                name.is_a?(Symbol) ? instance.instance_variable_get("@#{name}") : name
+              end
             end
             url = instance.send :url_for, url unless url.is_a? String
           end
