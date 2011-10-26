@@ -39,7 +39,6 @@ module Crummy
         crumb_string = crumbs.collect do |crumb|
           crumb_to_html crumb, options[:links]
         end * options[:separator]
-        crumb_string = crumb_string.html_safe if crumb_string.respond_to?(:html_safe)
         crumb_string
       when :html_list
         # In html_list format there are no separator, but may be
@@ -53,7 +52,6 @@ module Crummy
           crumb_to_html_list crumb, options[:links], options[:li_class], options[:active_li_class]
         end * options[:separator]
         crumb_string = "<ul class=\"#{options[:ul_class]}\" id=\"#{options[:ul_id]}\">" + crumb_string + "</ul>"
-        crumb_string = crumb_string.html_safe if crumb_string.respond_to?(:html_safe)
         crumb_string
       when :xml
         crumbs.collect do |crumb|
