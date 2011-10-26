@@ -1,3 +1,9 @@
+1.3
+* [FIXED] html_safe! is no longer called by default. That's the user's prerogative to do now.
+* [ADDED] Allow record to respond to to_s even if you pass a url or block.
+* [ADDED] Allow name to be a proc or lambda method
+* [ADDED] clear crumbs as before filter
+
 1.2
 * [ADDED] html_list format option
 * [FIXED] Bug with Passenger and REE deployments 
