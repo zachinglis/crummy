@@ -29,7 +29,7 @@ module Crummy
           # Get the return value of the name if its a proc.
           transformed_name = name.is_a?(Proc) ? name.call(instance) : name
 
-          _record = instance.instance_variable_get("@#{transformed_name}")
+          _record = instance.instance_variable_get("@#{transformed_name}") rescue nil
           if _record and _record.respond_to? :to_param
             instance.add_crumb(_record.to_s, url || instance.url_for(_record))
           else 
