@@ -100,9 +100,10 @@ With :format => :html_list you can specify additional params: :active_li_class, 
 
 h2. Notes
 
+Test library is at "Crummy Test":https://github.com/zachinglis/crummy-test
+
 h2. Todo
 
-* Port over rspecs from project to plugin (Fully tested in a project)
 * Accept collections of models as a single argument
 * Accept instances of models as a single argument
 * Allow for variables in names. (The workaround is to do your own before_filter for that currently)
