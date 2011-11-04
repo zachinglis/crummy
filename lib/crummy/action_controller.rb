@@ -18,7 +18,7 @@ module Crummy
           url = instance.send url if url.is_a? Symbol
           
           if url.present?
-            if url.kind_of? Enumerable
+            if url.kind_of? Array
               url.map! do |name|
                 name.is_a?(Symbol) ? instance.instance_variable_get("@#{name}") : name
               end
