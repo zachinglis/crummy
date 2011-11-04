@@ -28,12 +28,13 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = true
 end
 
-begin
-  gem 'hanna'
-  require 'hanna/rdoctask'
-rescue LoadError
-  require 'rake/rdoctask'
-end
+# begin
+#   gem 'hanna'
+#   require 'hanna/rdoctask'
+# rescue LoadError
+  require 'rdoc/task'
+# end
+
 desc 'Generate documentation for the crummy plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
