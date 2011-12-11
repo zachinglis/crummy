@@ -123,5 +123,6 @@ h2. Credits
 * "Kir Shatrov":http://shatrov.tk/
 * "sugilog":http://github.com/sugilog
 * "Trond Arve Nordheim":http://github.com/tanordheim
+* "Jan Szumiec":http://github.com/jasiek
 
 *Copyright (c) 2008-2011 Zach Inglis, released under the MIT license*
