@@ -34,10 +34,13 @@ module Crummy
         options[:separator] = "crumb" if options[:format] == :xml 
       end
       options[:links] = true if options[:links] == nil
+      options[:first_class] ||= ''
+      options[:last_class] ||= ''
+
       case options[:format]
       when :html
         crumb_string = crumbs.collect do |crumb|
-          crumb_to_html crumb, options[:links]
+          crumb_to_html(crumb, options[:links], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last))
         end * options[:separator]
         crumb_string
       when :html_list
@@ -49,13 +52,13 @@ module Crummy
         options[:ul_class] = "" if options[:ul_class] == nil
         options[:ul_id] = "" if options[:ul_id] == nil
         crumb_string = crumbs.collect do |crumb|
-          crumb_to_html_list crumb, options[:links], options[:li_class], options[:active_li_class]
+          crumb_to_html_list(crumb, options[:links], options[:li_class], options[:active_li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last))
         end * options[:separator]
         crumb_string = "<ul class=\"#{options[:ul_class]}\" id=\"#{options[:ul_id]}\">" + crumb_string + "</ul>"
         crumb_string
       when :xml
         crumbs.collect do |crumb|
-          crumb_to_xml crumb, options[:links], options[:separator]
+          crumb_to_xml(crumb, options[:links], options[:separator], (crumb == crumbs.first), (crumb == crumbs.last))
         end * ''
       else
         raise ArgumentError, "Unknown breadcrumb output format"
@@ -64,17 +67,24 @@ module Crummy
 
     private
 
-    def crumb_to_html(crumb, links)
+    def crumb_to_html(crumb, links, first_class, last_class, is_first, is_last)
+      html_classes = []
+      html_classes << first_class if is_first
+      html_classes << last_class if is_last
       name, url = crumb
-      url && links ? link_to(name, url) : name
+      url && links ? link_to(name, url, :class => html_classes) : name
     end
     
-    def crumb_to_html_list(crumb, links, li_class, active_li_class)
+    def crumb_to_html_list(crumb, links, li_class, active_li_class, first_class, last_class, is_first, is_last)
       name, url = crumb
-      url && links ? "<li class=\"#{li_class}\"><a href=\"#{url}\">#{name}</a></li>" : "<li class=\"#{active_li_class}\"><span>#{name}</span></li>"
+      html_classes = []
+      html_classes << first_class if is_first
+      html_classes << last_class if is_last
+      html_classes << active_li_class unless url && links
+      url && links ? "<li class=\"#{html_classes.join(' ').strip}\"><a href=\"#{url}\">#{name}</a></li>" : "<li class=\"#{html_classes.join(' ').strip}\"><span>#{name}</span></li>"
     end
-
-    def crumb_to_xml(crumb, links, separator)
+  
+    def crumb_to_xml(crumb, links, separator, is_first, is_last)
       name, url = crumb
       url && links ? "<#{separator} href=\"#{url}\">#{name}</#{separator}>" : "<#{separator}>#{name}</#{separator}>"
     end
