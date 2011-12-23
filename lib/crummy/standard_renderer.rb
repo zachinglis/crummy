@@ -81,6 +81,7 @@ module Crummy
       html_classes << first_class if is_first
       html_classes << last_class if is_last
       html_classes << active_li_class unless url && links
+      html_classes << li_class if !is_first && !is_last && url && links
       url && links ? "<li class=\"#{html_classes.join(' ').strip}\"><a href=\"#{url}\">#{name}</a></li>" : "<li class=\"#{html_classes.join(' ').strip}\"><span>#{name}</span></li>"
     end
   
