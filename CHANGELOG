@@ -1,3 +1,6 @@
+1.3.6
+* [FIXED] :li_class fixed in StandardRenderer#crumb_to_html_list
+
 1.3.5
 * [FIXED] Spacing in name argument was causing errors.
 * [FIXED] Bug where everything was getting parsed as an Array.
@@ -10,7 +13,7 @@
 
 1.2
 * [ADDED] html_list format option
-* [FIXED] Bug with Passenger and REE deployments 
+* [FIXED] Bug with Passenger and REE deployments
 
 1.1.1
 

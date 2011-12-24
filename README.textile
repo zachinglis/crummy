@@ -10,7 +10,7 @@ Simply add the dependency to your Gemfile:
 
 <pre>
   <code>
-    gem "crummy", "~> 1.3.5"
+    gem "crummy", "~> 1.3.6"
   </code>
 </pre>
 
@@ -124,5 +124,6 @@ h2. Credits
 * "sugilog":http://github.com/sugilog
 * "Trond Arve Nordheim":http://github.com/tanordheim
 * "Jan Szumiec":http://github.com/jasiek
+* "Jeff Browning":http://github.com/jbrowning
 
 *Copyright (c) 2008-2011 Zach Inglis, released under the MIT license*
