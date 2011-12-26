@@ -1,5 +1,3 @@
-# require 'crummy/standard_renderer'
-
 module Crummy
 
   def self.configuration
