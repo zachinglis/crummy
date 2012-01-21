@@ -3,7 +3,6 @@
 module Crummy
   class StandardRenderer
     include ActionView::Helpers::UrlHelper
-    include ActionView::Helpers::OutputSafetyHelper
     include ActionView::Helpers::TagHelper unless self.included_modules.include?(ActionView::Helpers::TagHelper)
 
     # Render the list of crumbs as either html or xml
@@ -55,7 +54,7 @@ module Crummy
         crumb_string = crumbs.collect do |crumb|
           crumb_to_html_list(crumb, options[:links], options[:li_class], options[:active_li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last))
         end * options[:separator]
-        crumb_string = content_tag(:ul, raw(crumb_string), :class => options[:ul_class], :id => options[:ul_id])
+        crumb_string = content_tag(:ul, crumb_string, :class => options[:ul_class], :id => options[:ul_id])
         crumb_string
       when :xml
         crumbs.collect do |crumb|
@@ -88,7 +87,7 @@ module Crummy
   
     def crumb_to_xml(crumb, links, separator, is_first, is_last)
       name, url = crumb
-      raw content_tag(separator, name, :href => (url && links ? url : nil))
+      content_tag(separator, name, :href => (url && links ? url : nil))
     end
   end
 end
