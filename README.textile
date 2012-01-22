@@ -120,7 +120,7 @@ h2. Credits
 * "Max Riveiro":http://github.com/kavu
 * "Kamil K. Lemański":http://kml.jogger.pl
 * "Brian Cobb":http://bcobb.net/
-* "Kir Shatrov":http://shatrov.tk/
+* "Kir Shatrov":http://github.com/shatrov ("Evrone company":http://evrone.com)
 * "sugilog":http://github.com/sugilog
 * "Trond Arve Nordheim":http://github.com/tanordheim
 * "Jan Szumiec":http://github.com/jasiek
