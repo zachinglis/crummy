@@ -27,15 +27,13 @@ module Crummy
     #   render_crumbs(" . ")  #=> <a href="/">Home</a> . <a href="/businesses">Businesses</a>
     #
     def render_crumbs(crumbs, options = {})
-      options[:format] = :html if options[:format] == nil
+      options[:skip_if_blank] ||= Crummy.configuration.skip_if_blank
       return '' if options[:skip_if_blank] && crumbs.count < 1
-      if options[:separator] == nil
-        options[:separator] = " &raquo; " if options[:format] == :html 
-        options[:separator] = "crumb" if options[:format] == :xml 
-      end
-      options[:links] = true if options[:links] == nil
-      options[:first_class] ||= ''
-      options[:last_class] ||= ''
+      options[:format] ||= Crummy.configuration.format
+      options[:separator] ||= Crummy.configuration.send(:"#{options[:format]}_separator")
+      options[:links] ||= Crummy.configuration.links
+      options[:first_class] ||= Crummy.configuration.first_class
+      options[:last_class] ||= Crummy.configuration.last_class
 
       case options[:format]
       when :html
@@ -44,13 +42,11 @@ module Crummy
         end * options[:separator]
         crumb_string
       when :html_list
-        # In html_list format there are no separator, but may be
-        options[:separator] = "" if options[:separator] == nil
-        # Lets set default values for special options of html_list format
-        options[:active_li_class] = "" if options[:active_li_class] == nil
-        options[:li_class] = "" if options[:li_class] == nil
-        options[:ul_class] = "" if options[:ul_class] == nil
-        options[:ul_id] = "" if options[:ul_id] == nil
+        # Let's set values for special options of html_list format
+        options[:active_li_class] ||= Crummy.configuration.active_li_class
+        options[:li_class] ||= Crummy.configuration.li_class
+        options[:ul_class] ||= Crummy.configuration.ul_class
+        options[:ul_id] ||= Crummy.configuration.ul_id
         crumb_string = crumbs.collect do |crumb|
           crumb_to_html_list(crumb, options[:links], options[:li_class], options[:active_li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last))
         end * options[:separator]

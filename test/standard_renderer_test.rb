@@ -5,6 +5,7 @@ require 'test/unit'
 
 require 'action_controller'
 require 'active_support/core_ext/string/output_safety'
+require 'crummy'
 require 'crummy/standard_renderer'
 
 class StandardRendererTest < Test::Unit::TestCase
@@ -25,5 +26,29 @@ class StandardRendererTest < Test::Unit::TestCase
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2'], ['name3', 'url3']], :li_class => "li_class", :first_class => 'first', :last_class => 'last', :format => :html_list))
     assert_equal('<crumb href="url1">name1</crumb><crumb href="url2">name2</crumb>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :first_class => 'first', :last_class => 'last', :format => :xml))
+  end
+
+  def test_configuration
+    renderer = StandardRenderer.new
+    # check defaults
+    assert_equal " &raquo; ", Crummy.configuration.html_separator
+    # adjust configuration
+    Crummy.configure do |config|
+      config.html_separator = " / "
+    end
+    assert_equal " / ", Crummy.configuration.html_separator
+  end
+
+  def test_configured_renderer
+    renderer = StandardRenderer.new
+    Crummy.configure do |config|
+      config.html_separator = " / "
+    end
+    # using configured separator
+    assert_equal('<a href="url1" class="">name1</a> / <a href="url2" class="">name2</a>',
+                 renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']]))
+    # overriding configured separator
+    assert_equal('<a href="url1" class="">name1</a> | <a href="url2" class="">name2</a>',
+                 renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :separator => " | "))
   end
 end

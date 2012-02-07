@@ -98,6 +98,43 @@ A crumb with a nil argument for the link will output an unlinked crumb.
 
 With :format => :html_list you can specify additional params: :active_li_class, :li_class, :ul_class, :ul_id
 
+h3. App-wide configuration
+
+You have the option to pre-configure any of the Crummy options in an application-wide configuration. The options above are available to configure, with the exception of @:separator@, as well as many others.
+
+The biggest difference is that @:separator@ is not an option. Instead, you have format-specific configuration options: @:html_separator@, @:xml_separator@, and @:html_list_separator@. @:separator@ can still be overridden in the view.
+
+Insert the following in a file named @config/initializers/crummy.rb@:
+
+<pre>
+  <code>
+    Crummy.configure do |config|
+      config.format = :xml
+    end
+  </code>
+</pre>
+
+Possible parameters for configuration are: 
+
+<pre>
+  <code>
+    :format
+    :links
+    :skip_if_blank
+    :html_separator
+    :xml_separator
+    :html_list_separator
+    :first_class
+    :last_class
+    :ul_id
+    :ul_class
+    :li_class
+    :active_li_class
+  </code>
+</pre>
+
+See @lib/crummy.rb@ for a list of these parameters and their defaults.
+
 h2. Notes
 
 Test library is at "Crummy Test":https://github.com/zachinglis/crummy-test
