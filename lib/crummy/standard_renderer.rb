@@ -54,7 +54,7 @@ module Crummy
         crumb_string = crumbs.collect do |crumb|
           crumb_to_html_list(crumb, options[:links], options[:li_class], options[:active_li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last))
         end * options[:separator]
-        crumb_string = "<ul class=\"#{options[:ul_class]}\" id=\"#{options[:ul_id]}\">" + crumb_string + "</ul>"
+        crumb_string = content_tag(:ul, crumb_string, :class => options[:ul_class], :id => options[:ul_id])
         crumb_string
       when :xml
         crumbs.collect do |crumb|
@@ -82,12 +82,12 @@ module Crummy
       html_classes << last_class if is_last
       html_classes << active_li_class unless url && links
       html_classes << li_class if !is_first && !is_last && url && links
-      url && links ? "<li class=\"#{html_classes.join(' ').strip}\"><a href=\"#{url}\">#{name}</a></li>" : "<li class=\"#{html_classes.join(' ').strip}\"><span>#{name}</span></li>"
+      content_tag(:li, url && links ? link_to(name, url) : content_tag(:span, name), :class => html_classes.join(' ').strip)
     end
   
     def crumb_to_xml(crumb, links, separator, is_first, is_last)
       name, url = crumb
-      url && links ? "<#{separator} href=\"#{url}\">#{name}</#{separator}>" : "<#{separator}>#{name}</#{separator}>"
+      content_tag(separator, name, :href => (url && links ? url : nil))
     end
   end
 end
