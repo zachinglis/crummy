@@ -162,5 +162,6 @@ h2. Credits
 * "Trond Arve Nordheim":http://github.com/tanordheim
 * "Jan Szumiec":http://github.com/jasiek
 * "Jeff Browning":http://github.com/jbrowning
+* "Bill Turner":http://github.com/billturner
 
 *Copyright (c) 2008-2011 Zach Inglis, released under the MIT license*
