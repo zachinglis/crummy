@@ -39,7 +39,7 @@ module Crummy
       when :html
         crumb_string = crumbs.collect do |crumb|
           crumb_to_html(crumb, options[:links], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last))
-        end * options[:separator]
+        end.reduce { |memo, obj| memo << options[:separator] << obj }
         crumb_string
       when :html_list
         # Let's set values for special options of html_list format

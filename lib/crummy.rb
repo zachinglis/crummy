@@ -24,7 +24,7 @@ module Crummy
 
     def initialize
       @format = :html
-      @html_separator = " &raquo; "
+      @html_separator = " &raquo; ".html_safe
       @xml_separator = "crumb"
       @html_list_separator = ''
       @skip_if_blank = true
