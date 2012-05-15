@@ -14,16 +14,6 @@ Simply add the dependency to your Gemfile:
   </code>
 </pre>
 
-h3. Rails 2
-
-In your terminal, write:
-
-<pre>
-  <code>
-    gem install crummy
-  </code>
-</pre>
-
 h2. Example
 
 In your controllers you may add_crumb either like a before_filter or within a method (It is also available to views).
