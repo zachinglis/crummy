@@ -10,7 +10,7 @@ Simply add the dependency to your Gemfile:
 
 <pre>
   <code>
-    gem "crummy", "~> 1.5.0"
+    gem "crummy", "~> 1.6.0"
   </code>
 </pre>
 
@@ -94,6 +94,7 @@ h3. Examples
   render_crumbs :format => :html_list  #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
  </code>
 </pre>
+
 A crumb with a nil argument for the link will output an unlinked crumb.
 
 With :format => :html_list you can specify additional params: :active_li_class, :li_class, :ul_class, :ul_id
@@ -114,7 +115,7 @@ Insert the following in a file named @config/initializers/crummy.rb@:
   </code>
 </pre>
 
-Possible parameters for configuration are: 
+Possible parameters for configuration are:
 
 <pre>
   <code>
