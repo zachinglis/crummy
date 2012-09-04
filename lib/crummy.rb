@@ -21,6 +21,7 @@ module Crummy
     attr_accessor :ul_class
     attr_accessor :li_class
     attr_accessor :active_li_class
+    attr_accessor :microdata
 
     def initialize
       @format = :html
@@ -35,6 +36,7 @@ module Crummy
       @ul_class = ''
       @li_class = ''
       @active_li_class = ''
+      @migrodata = false
     end
   end
 
