@@ -28,6 +28,11 @@ class StandardRendererTest < Test::Unit::TestCase
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2'], ['name3', 'url3']], :li_class => "li_class", :first_class => 'first', :last_class => 'last', :format => :html_list, :separator => " / "))
     assert_equal('<crumb href="url1">name1</crumb><crumb href="url2">name2</crumb>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :first_class => 'first', :last_class => 'last', :format => :xml))
+
+    assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" class="first last" itemprop="url"><span itemprop="title">name</span></a></div>',
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :microdata => true))
+    assert_equal('<ul class="" id=""><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" itemprop="url"><span itemprop="title">name</span></a></li></ul>',
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html_list, :microdata => true))
   end
 
   def test_configuration
@@ -52,5 +57,15 @@ class StandardRendererTest < Test::Unit::TestCase
     # overriding configured separator
     assert_equal('<a href="url1" class="">name1</a> | <a href="url2" class="">name2</a>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :separator => " | "))
+  end
+
+  def test_configured_renderer_with_microdata
+    renderer = StandardRenderer.new
+    Crummy.configure do |config|
+      config.microdata = true
+    end
+    # using configured microdata setting
+    assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" class="first last" itemprop="url"><span itemprop="title">name</span></a></div>',
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html))
   end
 end
