@@ -36,7 +36,7 @@ module Crummy
       @ul_class = ''
       @li_class = ''
       @active_li_class = ''
-      @migrodata = false
+      @microdata = false
     end
   end
 
