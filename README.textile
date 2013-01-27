@@ -1,4 +1,6 @@
-h1. Crummy !https://travis-ci.org/zachinglis/crummy.png?branch=master
+!https://travis-ci.org/zachinglis/crummy.png?branch=master
+
+h1. Crummy
 
 h2. Introduction
 
