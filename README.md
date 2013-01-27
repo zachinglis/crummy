@@ -52,25 +52,25 @@ It takes 3 options
 The output format. Can either be :xml or :html or :html\_list. Defaults
 to :html
 
-    :format =\> (:html|:html\_list|:xml)
+    :format => (:html|:html_list|:xml)
 
 The separator text. It does not assume you want spaces on either side so
 you must specify. Defaults to `&raquo;` for :html and
 `<crumb>` for :xml
 
-    :separator =\> string
+    :separator => string
 
 Render links in the output. Defaults to *true*
 
-    :links =\> boolean
+    :links => boolean
 
-    :skip\_if\_blank =\> true
+    :skip_if_blank => true
 
 Render
 [Richsnipet](http:/support.google.com/webmasters/bin/answer.py?hl=en&answer=99170&topic=1088472&ctx=topic/)
 Default to *false*
 
-    :microdata =\> true
+    :microdata => true
 
 With this option, output will be blank if there are no breadcrumbs.
 
@@ -86,8 +86,8 @@ With this option, output will be blank if there are no breadcrumbs.
 
 A crumb with a nil argument for the link will output an unlinked crumb.
 
-With `:format =\> :html\_list` you can specify additional `params:
-:active\_li\_class, :li\_class, :ul\_class, :ul\_id`
+With `:format => :html_list` you can specify additional `params:
+:active_li_class, :li_class, :ul_class, :ul_id`
 
 ### App-wide configuration
 
