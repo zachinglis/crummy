@@ -1,4 +1,4 @@
-h1. Crummy
+h1. Crummy !https://travis-ci.org/zachinglis/crummy.png?branch=master
 
 h2. Introduction
 
