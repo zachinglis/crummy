@@ -1,24 +1,8 @@
-require 'rubygems'
-require 'rake'
+#!/usr/bin/env rake
+require 'bundler/gem_tasks'
 
 desc 'Default: run unit tests.'
 task :default => :test
-
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "crummy"
-    gem.summary = %Q{Tasty breadcrumbs!}
-    gem.description = %Q{Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.}
-    gem.email = "zach+crummy@londonmade.co.uk"
-    gem.homepage = "http://github.com/zachinglis/crummy"
-    gem.authors = ["Zach Inglis"]
-    gem.files = FileList['lib/**/*.rb','tasks/*.rake','init.rb','MIT-LICENSE','Rakefile','README.textile','VERSION', '.gitignore']
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
-end
 
 require 'rake/testtask'
 desc 'Test the crummy plugin.'
@@ -28,12 +12,7 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = true
 end
 
-# begin
-#   gem 'hanna'
-#   require 'hanna/rdoctask'
-# rescue LoadError
-  require 'rdoc/task'
-# end
+require 'rdoc/task'
 
 desc 'Generate documentation for the crummy plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
