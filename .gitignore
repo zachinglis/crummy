@@ -1,3 +1,6 @@
 rdoc
-pkg
 nbproject
+*.gem
+.bundle
+Gemfile.lock
+pkg/*
