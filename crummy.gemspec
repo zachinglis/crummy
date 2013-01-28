@@ -13,12 +13,12 @@ Gem::Specification.new do |s|
   s.description = %q{Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.}
   s.email = %q{zach+crummy@londonmade.co.uk}
   s.extra_rdoc_files = [
-    "README.textile"
+    "README.md"
   ]
   s.files = [
     ".gitignore",
     "MIT-LICENSE",
-    "README.textile",
+    "README.md",
     "Rakefile",
     "VERSION",
     "init.rb",
