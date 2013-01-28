@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
     "lib/crummy/action_controller.rb",
     "lib/crummy/action_view.rb",
     "lib/crummy/railtie.rb",
-    "lib/crummy/standard_renderer.rb",
+    "lib/crummy/standard_renderer.rb"
   ]
   s.homepage = %q{http://github.com/zachinglis/crummy}
   s.require_paths = [%q{lib}]
