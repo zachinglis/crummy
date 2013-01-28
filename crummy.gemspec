@@ -32,6 +32,10 @@ Gem::Specification.new do |s|
   s.require_paths = [%q{lib}]
   s.rubygems_version = %q{1.8.8}
   s.summary = %q{Tasty breadcrumbs!}
+  
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'activesupport'
+  s.add_development_dependency 'actionpack'
 
   if s.respond_to? :specification_version then
     s.specification_version = 3

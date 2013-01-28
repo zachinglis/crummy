@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    crummy (1.6.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -42,4 +47,5 @@ PLATFORMS
 DEPENDENCIES
   actionpack
   activesupport
+  crummy!
   rake
