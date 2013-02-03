@@ -23,9 +23,9 @@ within a method (It is also available to views).
 
     class BusinessController < ApplicationController
       add_crumb("Businesses") { |instance| instance.send :businesses_path }
-      add_crumb("Comments", :only => "comments") { |instance| instance.send :businesses_comments_path }
-      before_filter :load_comment, :only => "show"
-      add_crumb :comment, :only => "show"
+      add_crumb("Comments", only: "comments") { |instance| instance.send :businesses_comments_path }
+      before_filter :load_comment, only: "show"
+      add_crumb :comment, only: "show"
 
       # Example for nested routes:
       add_crumb(:document) { [:account, :document] }
@@ -52,41 +52,41 @@ It takes 3 options
 The output format. Can either be :xml or :html or :html\_list. Defaults
 to :html
 
-    :format => (:html|:html_list|:xml)
+    format: (:html|:html_list|:xml)
 
 The separator text. It does not assume you want spaces on either side so
 you must specify. Defaults to `&raquo;` for :html and
 `<crumb>` for :xml
 
-    :separator => string
+    separator: string
 
 Render links in the output. Defaults to *true*
 
-    :links => boolean
+    links: boolean
 
-    :skip_if_blank => true
+    skip_if_blank: true
 
 Render
 [Richsnipet](http:/support.google.com/webmasters/bin/answer.py?hl=en&answer=99170&topic=1088472&ctx=topic/)
 Default to *false*
 
-    :microdata => true
+    microdata: true
 
 With this option, output will be blank if there are no breadcrumbs.
 
 ### Examples
 
-    render_crumbs                        #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
-    render_crumbs :separator => ' | '    #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
-    render_crumbs :format => :xml        #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
-    render_crumbs :format => :html_list  #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
-    render_crumbs :format => :html_list, :microdata => true
+    render_crumbs                     #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
+    render_crumbs separator: ' | '    #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
+    render_crumbs format: :xml        #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
+    render_crumbs format: :html_list  #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
+    render_crumbs format: :html_list, :microdata => true
                                          #=> <ul class="" id=""><li class="" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
                                          #   <a href="/" itemprop="url"><span itemprop="title">Home</span></a></li></ul>
 
 A crumb with a nil argument for the link will output an unlinked crumb.
 
-With `:format => :html_list` you can specify additional `params:
+With `format: :html_list` you can specify additional `params:
 :active_li_class, :li_class, :ul_class, :ul_id`
 
 ### App-wide configuration
