@@ -1,3 +1,7 @@
+1.7.0
+* [ADDED] Added option for google microdata
+* [REFACTORED] Cleaned up development internals
+
 1.6.0
 * [FIXED] A fix for the escaped html problem in :html_list
 
