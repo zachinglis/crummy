@@ -87,7 +87,7 @@ module Crummy
       html_classes << first_class if is_first
       html_classes << last_class if is_last
       html_classes << active_li_class unless url && links
-      html_classes << li_class if !is_first && !is_last && url && links
+      html_classes << li_class
       html_options = {:class => html_classes.join(' ').strip}
       if with_microdata
         html_options[:itemscope] = true
