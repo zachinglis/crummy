@@ -22,7 +22,7 @@ module Crummy
     #   render_crumbs :format => :xml         #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
     #   render_crumbs :format => :html_list   #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
     #   
-    # With :format => :html_list you can specify additional params: active_li_class, li_class, ul_class, ul_id
+    # With :format => :html_list you can specify additional params: li_class, ul_class, ul_id
     # The only argument is for the separator text. It does not assume you want spaces on either side so you must specify. Defaults to +&raquo;+
     #
     #   render_crumbs(" . ")  #=> <a href="/">Home</a> . <a href="/businesses">Businesses</a>
@@ -45,12 +45,11 @@ module Crummy
         crumb_string
       when :html_list
         # Let's set values for special options of html_list format
-        options[:active_li_class] ||= Crummy.configuration.active_li_class
         options[:li_class] ||= Crummy.configuration.li_class
         options[:ul_class] ||= Crummy.configuration.ul_class
         options[:ul_id] ||= Crummy.configuration.ul_id
         crumb_string = crumbs.collect do |crumb|
-          crumb_to_html_list(crumb, options[:links], options[:li_class], options[:active_li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata])
+          crumb_to_html_list(crumb, options[:links], options[:li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata])
         end.reduce { |memo, obj| memo << options[:separator] << obj }
         crumb_string = content_tag(:ul, crumb_string, :class => options[:ul_class], :id => options[:ul_id])
         crumb_string
@@ -81,12 +80,11 @@ module Crummy
       end
     end
     
-    def crumb_to_html_list(crumb, links, li_class, active_li_class, first_class, last_class, is_first, is_last, with_microdata)
+    def crumb_to_html_list(crumb, links, li_class, first_class, last_class, is_first, is_last, with_microdata)
       name, url = crumb
       html_classes = []
       html_classes << first_class if is_first
       html_classes << last_class if is_last
-      html_classes << active_li_class unless url && links
       html_classes << li_class
       html_options = {:class => html_classes.join(' ').strip}
       if with_microdata

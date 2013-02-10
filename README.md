@@ -86,8 +86,7 @@ With this option, output will be blank if there are no breadcrumbs.
 
 A crumb with a nil argument for the link will output an unlinked crumb.
 
-With `format: :html_list` you can specify additional `params:
-:active_li_class, :li_class, :ul_class, :ul_id`
+With `format: :html_list` you can specify additional `params: :li_class, :ul_class, :ul_id`
 
 ### App-wide configuration
 
@@ -119,7 +118,6 @@ Possible parameters for configuration are:
     :ul_id
     :ul_class
     :li_class
-    :active_li_class
     :microdata
 
 See `lib/crummy.rb` for a list of these parameters and their defaults.

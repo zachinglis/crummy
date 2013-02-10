@@ -20,7 +20,6 @@ module Crummy
     attr_accessor :ul_id
     attr_accessor :ul_class
     attr_accessor :li_class
-    attr_accessor :active_li_class
     attr_accessor :microdata
 
     def initialize
@@ -35,8 +34,15 @@ module Crummy
       @ul_id = ''
       @ul_class = ''
       @li_class = ''
-      @active_li_class = ''
       @microdata = false
+    end
+
+    def active_li_class=(class_name)
+      puts "CRUMMY: The 'active_li_class' option is DEPRECATED and will be removed from a future version"
+    end
+
+    def active_li_class
+      puts "CRUMMY: The 'active_li_class' option is DEPRECATED and will be removed from a future version"
     end
   end
 
