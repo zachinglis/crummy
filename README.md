@@ -10,38 +10,44 @@ Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 
 Simply add the dependency to your Gemfile:
 
-    gem "crummy", "~> 1.7.0"
+```ruby
+gem "crummy", "~> 1.7.0"
+```
 
 # Example
 
 In your controllers you may add\_crumb either like a before\_filter or
 within a method (It is also available to views).
 
-    class ApplicationController
-      add_crumb "Home", '/'
-    end
+```ruby
+class ApplicationController
+  add_crumb "Home", '/'
+end
 
-    class BusinessController < ApplicationController
-      add_crumb("Businesses") { |instance| instance.send :businesses_path }
-      add_crumb("Comments", only: "comments") { |instance| instance.send :businesses_comments_path }
-      before_filter :load_comment, only: "show"
-      add_crumb :comment, only: "show"
+class BusinessController < ApplicationController
+  add_crumb("Businesses") { |instance| instance.send :businesses_path }
+  add_crumb("Comments", only: "comments") { |instance| instance.send :businesses_comments_path }
+  before_filter :load_comment, only: "show"
+  add_crumb :comment, only: "show"
 
-      # Example for nested routes:
-      add_crumb(:document) { [:account, :document] }
+  # Example for nested routes:
+  add_crumb(:document) { [:account, :document] }
 
-      def show
-        add_crumb @business.display_name, @business
-      end
+  def show
+    add_crumb @business.display_name, @business
+  end
 
-      def load_comment
-        @comment = Comment.find(params[:id])
-      end
-    end
+  def load_comment
+    @comment = Comment.find(params[:id])
+  end
+end
+```
 
 Then in your view:
 
-    <%= render_crumbs %>
+```erb
+<%= render_crumbs %>
+```
 
 ## Options for render\_crumbs
 
@@ -52,37 +58,47 @@ It takes 3 options
 The output format. Can either be :xml or :html or :html\_list. Defaults
 to :html
 
-    format: (:html|:html_list|:xml)
+```ruby
+format: (:html|:html_list|:xml)
+```
 
 The separator text. It does not assume you want spaces on either side so
 you must specify. Defaults to `&raquo;` for :html and
 `<crumb>` for :xml
 
-    separator: string
+```ruby
+separator: string
+```
 
 Render links in the output. Defaults to *true*
 
-    links: boolean
+```ruby
+links: boolean
 
-    skip_if_blank: true
+skip_if_blank: true
+```
 
 Render
 [Richsnipet](http:/support.google.com/webmasters/bin/answer.py?hl=en&answer=99170&topic=1088472&ctx=topic/)
 Default to *false*
 
-    microdata: true
+```ruby
+microdata: true
+```
 
 With this option, output will be blank if there are no breadcrumbs.
 
 ### Examples
 
-    render_crumbs                     #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
-    render_crumbs separator: ' | '    #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
-    render_crumbs format: :xml        #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
-    render_crumbs format: :html_list  #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
-    render_crumbs format: :html_list, :microdata => true
-                                         #=> <ul class="" id=""><li class="" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
-                                         #   <a href="/" itemprop="url"><span itemprop="title">Home</span></a></li></ul>
+```ruby
+render_crumbs                     #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
+render_crumbs separator: ' | '    #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
+render_crumbs format: :xml        #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
+render_crumbs format: :html_list  #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
+render_crumbs format: :html_list, :microdata => true
+                                  #=> <ul class="" id=""><li class="" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+                                  #     <a href="/" itemprop="url"><span itemprop="title">Home</span></a></li></ul>
+```
 
 A crumb with a nil argument for the link will output an unlinked crumb.
 
@@ -101,24 +117,28 @@ overridden in the view.
 
 Insert the following in a file named `config/initializers/crummy.rb`:
 
-    Crummy.configure do |config|
-      config.format = :xml
-    end
+```ruby
+Crummy.configure do |config|
+  config.format = :xml
+end
+```
 
 Possible parameters for configuration are:
 
-    :format
-    :links
-    :skip_if_blank
-    :html_separator
-    :xml_separator
-    :html_list_separator
-    :first_class
-    :last_class
-    :ul_id
-    :ul_class
-    :li_class
-    :microdata
+```ruby
+:format
+:links
+:skip_if_blank
+:html_separator
+:xml_separator
+:html_list_separator
+:first_class
+:last_class
+:ul_id
+:ul_class
+:li_class
+:microdata
+```
 
 See `lib/crummy.rb` for a list of these parameters and their defaults.
 
