@@ -142,9 +142,9 @@ Possible parameters for configuration are:
 
 See `lib/crummy.rb` for a list of these parameters and their defaults.
 
-## Notes
+## Live example application
 
-Test library is at [Crummy Test](https://github.com/zachinglis/crummy-test)
+An example application is available right inside this gem. That application is documented, see `example/README` for details about usage.
 
 ## Todo
 
