@@ -23,9 +23,18 @@ bundle install
 # Create the database
 bundle exec rake db:schema:load
 bundle exec rake db:seed
+# Create the test database
+bundle exec rake db:test:clone
+
+# Get the tests green
+bundle exec rake
 
 # Start the server
 rails server
 ```
 
 Your app waits for you at [http://localhost:3000](http://localhost:3000).
+
+* * *
+
+I hope this makes the example application a better place to test the gem.
