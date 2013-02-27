@@ -18,7 +18,7 @@ end
 gem 'jquery-rails'
 
 gem 'haml'
-gem 'crummy', :git => "git://github.com/zachinglis/crummy.git"
+gem 'crummy', :path => '../'
 
 group :test do
   # Pretty printed test output
