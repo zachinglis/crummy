@@ -1,13 +1,13 @@
-h1. Crummy Test
+# Crummy Test
 
-h2. Introduction
+## Introduction
 
 I lost the previous test library in a rather frustrating migration fail. I quickly created this to fix this. I went with the archaic route of visual testing for now but I plan on implementing RSpec into it later.
 
 My last Crummy library was private as I tried to work out how to implement decent test into the gem itself but I have given up. There is no good solution in my experience so I am realising this.
 
 
-h2. Links
+## Links
 
-"Crummy Gem":http://github.com/zachinglis/crummy
-"Creator: Zach Inglis":http://zachinglis.com
+[Crummy Gem](http://github.com/zachinglis/crummy)
+[Creator: Zach Inglis](http://zachinglis.com)
