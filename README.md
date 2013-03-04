@@ -1,7 +1,7 @@
 # Crummy
 
 [![Gem Version](https://badge.fury.io/rb/crummy.png)](http://badge.fury.io/rb/crummy)
-[![Build Status](https://secure.travis-ci.org/zachinglis/crummy.png?branch=master)](http://travis-ci.org/zachinglis/crummy)
+[![Build Status](https://secure.travis-ci.org/gonzalo-bulnes/crummy.png)](http://travis-ci.org/gonzalo-bulnes/crummy)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/zachinglis/crummy)
 
 Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
@@ -142,9 +142,9 @@ Possible parameters for configuration are:
 
 See `lib/crummy.rb` for a list of these parameters and their defaults.
 
-## Notes
+## Live example application
 
-Test library is at [Crummy Test](https://github.com/zachinglis/crummy-test)
+An example application is available right inside this gem. That application is documented, see `example/README` for details about usage.
 
 ## Todo
 
