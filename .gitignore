@@ -3,3 +3,4 @@ nbproject
 *.gem
 .bundle
 pkg/*
+Gemfile.lock
