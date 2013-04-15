@@ -36,11 +36,12 @@ module Crummy
       options[:first_class] ||= Crummy.configuration.first_class
       options[:last_class] ||= Crummy.configuration.last_class
       options[:microdata] ||= Crummy.configuration.microdata
+      options[:last_crumb_linked] = Crummy.configuration.last_crumb_linked if options[:last_crumb_linked].nil?
 
       case options[:format]
       when :html
         crumb_string = crumbs.collect do |crumb|
-          crumb_to_html(crumb, options[:links], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata])
+          crumb_to_html(crumb, options[:links], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata], options[:last_crumb_linked])
         end.reduce { |memo, obj| memo << options[:separator] << obj }
         crumb_string
       when :html_list
@@ -49,7 +50,7 @@ module Crummy
         options[:ul_class] ||= Crummy.configuration.ul_class
         options[:ul_id] ||= Crummy.configuration.ul_id
         crumb_string = crumbs.collect do |crumb|
-          crumb_to_html_list(crumb, options[:links], options[:li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata])
+          crumb_to_html_list(crumb, options[:links], options[:li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata], options[:last_crumb_linked])
         end.reduce { |memo, obj| memo << options[:separator] << obj }
         crumb_string = content_tag(:ul, crumb_string, :class => options[:ul_class], :id => options[:ul_id])
         crumb_string
@@ -64,24 +65,26 @@ module Crummy
 
     private
 
-    def crumb_to_html(crumb, links, first_class, last_class, is_first, is_last, with_microdata)
+    def crumb_to_html(crumb, links, first_class, last_class, is_first, is_last, with_microdata, last_crumb_linked)
       html_classes = []
       html_classes << first_class if is_first
       html_classes << last_class if is_last
       name, url = crumb
-      html_content = url && links ? link_to(name, url) : content_tag(:span, name)
+      can_link = url && links && (!is_last || last_crumb_linked)
+      html_content = can_link ? link_to(name, url) : content_tag(:span, name)
       if with_microdata
         item_title = content_tag(:span, name, :itemprop => "title")
         html_options = {:itemscope => true, :itemtype => data_definition_url("Breadcrumb")}
-        html_content = url && links ? link_to(item_title, url, :class => html_classes, :itemprop => "url") : item_title
+        html_content = can_link ? link_to(item_title, url, :class => html_classes, :itemprop => "url") : item_title
         content_tag(:div, html_content, html_options)
       else
-        url && links ? link_to(name, url, :class => html_classes) : name
+        can_link ? link_to(name, url, :class => html_classes) : name
       end
     end
     
-    def crumb_to_html_list(crumb, links, li_class, first_class, last_class, is_first, is_last, with_microdata)
+    def crumb_to_html_list(crumb, links, li_class, first_class, last_class, is_first, is_last, with_microdata, last_crumb_linked)
       name, url = crumb
+      can_link = url && links && (!is_last || last_crumb_linked)
       html_classes = []
       html_classes << first_class if is_first
       html_classes << last_class if is_last
@@ -91,9 +94,9 @@ module Crummy
         html_options[:itemscope] = true
         html_options[:itemtype]  = data_definition_url("Breadcrumb")
         item_title = content_tag(:span, name, :itemprop => "title")
-        html_content = url && links ? link_to(item_title, url, :itemprop => "url") : item_title
+        html_content = can_link ? link_to(item_title, url, :itemprop => "url") : item_title
       else
-        html_content = url && links ? link_to(name, url) : content_tag(:span, name)
+        html_content = can_link ? link_to(name, url) : content_tag(:span, name)
       end
       content_tag(:li, html_content, html_options)
     end
