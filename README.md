@@ -82,6 +82,12 @@ Render
 [Richsnipet](http:/support.google.com/webmasters/bin/answer.py?hl=en&answer=99170&topic=1088472&ctx=topic/)
 Default to *false*
 
+```
+last_crumb_linked: false
+```
+
+Optionally disable linking of the last crumb, Defaults to *true*
+
 ```ruby
 microdata: true
 ```
