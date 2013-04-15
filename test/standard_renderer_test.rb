@@ -36,6 +36,32 @@ class StandardRendererTest < Test::Unit::TestCase
     assert_equal('<ul class="crumbclass" id="crumbid"><li class="liclass"><a href="url">name</a></li></ul>',
                  renderer.render_crumbs([['name', 'url']], :format => :html_list, :ul_id => "crumbid", :ul_class => "crumbclass", :li_class => "liclass"))
   end
+ 
+  def test_classes_last_crumb_not_linked
+    renderer = StandardRenderer.new
+    assert_equal('name',
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))  
+    assert_equal('<ul class="" id=""><li class="first last"><span>name</span></li></ul>',
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html_list, :last_crumb_linked => false))
+    assert_equal('<crumb href="url">name</crumb>',
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :xml, :last_crumb_linked => false))
+
+    assert_equal('<a href="url1" class="first">name1</a> &raquo; name2',
+                 renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))
+    assert_equal('<ul class="" id=""><li class="first li_class"><a href="url1">name1</a></li><li class="li_class"><a href="url2">name2</a></li><li class="last li_class"><span>name3</span></li></ul>',
+                 renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2'], ['name3', 'url3']], :li_class => "li_class", :first_class => 'first', :last_class => 'last', :format => :html_list, :last_crumb_linked => false))
+    assert_equal('<ul class="" id=""><li class="first li_class"><a href="url1">name1</a></li> / <li class="li_class"><a href="url2">name2</a></li> / <li class="last li_class"><span>name3</span></li></ul>',
+                 renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2'], ['name3', 'url3']], :li_class => "li_class", :first_class => 'first', :last_class => 'last', :format => :html_list, :separator => " / ", :last_crumb_linked => false))
+    assert_equal('<crumb href="url1">name1</crumb><crumb href="url2">name2</crumb>',
+                 renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :first_class => 'first', :last_class => 'last', :format => :xml, :last_crumb_linked => false))
+
+    assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></div>',
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :microdata => true, :last_crumb_linked => false))
+    assert_equal('<ul class="" id=""><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></li></ul>',
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html_list, :microdata => true, :last_crumb_linked => false))
+    assert_equal('<ul class="crumbclass" id="crumbid"><li class="liclass"><span>name</span></li></ul>',
+                 renderer.render_crumbs([['name', 'url']], :format => :html_list, :ul_id => "crumbid", :ul_class => "crumbclass", :li_class => "liclass", :last_crumb_linked => false))
+  end
 
   def test_configuration
     renderer = StandardRenderer.new
@@ -69,5 +95,7 @@ class StandardRendererTest < Test::Unit::TestCase
     # using configured microdata setting
     assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" class="first last" itemprop="url"><span itemprop="title">name</span></a></div>',
                  renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html))
-  end
+    # last crumb not linked
+    assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></div>',
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))  end
 end

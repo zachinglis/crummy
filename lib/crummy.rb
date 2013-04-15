@@ -21,6 +21,7 @@ module Crummy
     attr_accessor :ul_class
     attr_accessor :li_class
     attr_accessor :microdata
+    attr_accessor :last_crumb_linked
 
     def initialize
       @format = :html
@@ -35,6 +36,7 @@ module Crummy
       @ul_class = ''
       @li_class = ''
       @microdata = false
+      @last_crumb_linked = true
     end
 
     def active_li_class=(class_name)
