@@ -1,7 +1,7 @@
 PATH
   remote: ../
   specs:
-    crummy (1.7.0)
+    crummy (1.7.1)
 
 GEM
   remote: http://rubygems.org/
