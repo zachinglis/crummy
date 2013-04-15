@@ -69,19 +69,21 @@ module Crummy
       html_classes << first_class if is_first
       html_classes << last_class if is_last
       name, url = crumb
-      html_content = url && links ? link_to(name, url) : content_tag(:span, name)
+      can_link = url && links && !is_last
+      html_content = can_link ? link_to(name, url) : content_tag(:span, name)
       if with_microdata
         item_title = content_tag(:span, name, :itemprop => "title")
         html_options = {:itemscope => true, :itemtype => data_definition_url("Breadcrumb")}
-        html_content = url && links ? link_to(item_title, url, :class => html_classes, :itemprop => "url") : item_title
+        html_content = can_link ? link_to(item_title, url, :class => html_classes, :itemprop => "url") : item_title
         content_tag(:div, html_content, html_options)
       else
-        url && links ? link_to(name, url, :class => html_classes) : name
+        can_link ? link_to(name, url, :class => html_classes) : name
       end
     end
     
     def crumb_to_html_list(crumb, links, li_class, first_class, last_class, is_first, is_last, with_microdata)
       name, url = crumb
+      can_link = url && links && !is_last
       html_classes = []
       html_classes << first_class if is_first
       html_classes << last_class if is_last
@@ -91,9 +93,9 @@ module Crummy
         html_options[:itemscope] = true
         html_options[:itemtype]  = data_definition_url("Breadcrumb")
         item_title = content_tag(:span, name, :itemprop => "title")
-        html_content = url && links ? link_to(item_title, url, :itemprop => "url") : item_title
+        html_content = can_link ? link_to(item_title, url, :itemprop => "url") : item_title
       else
-        html_content = url && links ? link_to(name, url) : content_tag(:span, name)
+        html_content = can_link ? link_to(name, url) : content_tag(:span, name)
       end
       content_tag(:li, html_content, html_options)
     end
