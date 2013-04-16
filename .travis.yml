@@ -3,11 +3,11 @@ rvm:
  - 1.9.3
  - 2.0.0
 gemfile:
- - gemfiles/rails3_2/Gemfile
- - gemfiles/rails4_0/Gemfile
+ - gemfiles/rails3_2.gemfile
+ - gemfiles/rails4_0.gemfile
 matrix:
   allow_failures:
     - rvm: 1.9.3
-      gemfile: gemfiles/rails4_0/Gemfile
+      gemfile: gemfiles/rails4_0.gemfile
     - rvm: 2.0.0
-      gemfile: gemfiles/rails4_0/Gemfile
+      gemfile: gemfiles/rails4_0.gemfile
