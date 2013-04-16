@@ -1,5 +1,6 @@
 #!/usr/bin/env rake
 require 'bundler/gem_tasks'
+require 'appraisal'
 
 desc 'Default: run unit tests.'
 task :default => :test
