@@ -144,6 +144,7 @@ Possible parameters for configuration are:
 :ul_class
 :li_class
 :microdata
+:last_crumb_linked
 ```
 
 See `lib/crummy.rb` for a list of these parameters and their defaults.
