@@ -4,14 +4,14 @@
 [![Build Status](https://secure.travis-ci.org/zachinglis/crummy.png)](http://travis-ci.org/zachinglis/crummy)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/zachinglis/crummy)
 
-Crummy is a simple and tasty way to add breadcrumbs to your Rails applications. Added truncate feature.
+Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 
 ## Install
 
 Simply add the dependency to your Gemfile:
 
 ```ruby
-gem "crummy", :git =>'https://github.com/bhushangahire/crummy.git'
+gem "crummy", "~> 1.7.1"
 ```
 
 # Example
