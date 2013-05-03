@@ -5,3 +5,4 @@ nbproject
 pkg/*
 Gemfile.lock
 *.gemfile.lock
+.idea

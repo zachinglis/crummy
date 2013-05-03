@@ -42,7 +42,7 @@ class StandardRendererTest < Test::Unit::TestCase
   def test_classes_last_crumb_not_linked
     renderer = StandardRenderer.new
     assert_equal('name',
-                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))  
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))
     assert_equal('<ul class="" id=""><li class="first last"><span>name</span></li></ul>',
                  renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html_list, :last_crumb_linked => false))
     assert_equal('<crumb href="url">name</crumb>',
@@ -63,6 +63,44 @@ class StandardRendererTest < Test::Unit::TestCase
                  renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html_list, :microdata => true, :last_crumb_linked => false))
     assert_equal('<ul class="crumbclass" id="crumbid"><li class="liclass"><span>name</span></li></ul>',
                  renderer.render_crumbs([['name', 'url']], :format => :html_list, :ul_id => "crumbid", :ul_class => "crumbclass", :li_class => "liclass", :last_crumb_linked => false))
+  end
+
+  def test_link_html_options
+    renderer = StandardRenderer.new
+    Crummy.configure do |config|
+      config.microdata = false
+    end
+
+    assert_equal('<a href="url" class="first last" title="link title">name</a>',
+                 renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html))
+
+    assert_equal('name',
+                 renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))
+
+    assert_equal('<ul class="" id=""><li class="first last"><a href="url" title="link title">name</a></li></ul>',
+                 renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html_list))
+
+    assert_equal('<ul class="" id=""><li class="first last"><span>name</span></li></ul>',
+                 renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html_list, :last_crumb_linked => false))
+  end
+
+  def test_link_html_options_with_microdata
+    renderer = StandardRenderer.new
+    Crummy.configure do |config|
+      config.microdata = true
+    end
+
+    assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" class="first last" itemprop="url" title="link title"><span itemprop="title">name</span></a></div>',
+                 renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html))
+
+    assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></div>',
+                 renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))
+
+    assert_equal('<ul class="" id=""><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" itemprop="url" title="link title"><span itemprop="title">name</span></a></li></ul>',
+                 renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html_list))
+
+    assert_equal('<ul class="" id=""><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></li></ul>',
+                 renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html_list, :last_crumb_linked => false))
   end
 
   def test_configuration
@@ -99,5 +137,7 @@ class StandardRendererTest < Test::Unit::TestCase
                  renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html))
     # last crumb not linked
     assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></div>',
-                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))  end
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))
+  end
+
 end
