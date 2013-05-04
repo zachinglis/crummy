@@ -5,10 +5,12 @@ require 'test/unit'
 
 require 'action_controller'
 require 'active_support/core_ext/string/output_safety'
+require 'action_dispatch/testing/assertions'
 require 'crummy'
 require 'crummy/standard_renderer'
 
 class StandardRendererTest < Test::Unit::TestCase
+  include ActionDispatch::Assertions::DomAssertions
   include Crummy
 
   def test_classes
