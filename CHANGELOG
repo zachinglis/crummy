@@ -1,3 +1,7 @@
+1.7.2
+* [ADDED] :truncate option to shorten text in breadcrumbs
+* [ADDED] Added ability to pass html link options through to renderer
+
 1.7.1
 * [ADDED] :last_crumb_linked option to disable linking crumb on current page
 
