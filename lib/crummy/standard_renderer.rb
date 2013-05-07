@@ -70,21 +70,25 @@ module Crummy
       html_classes = []
       html_classes << first_class if is_first
       html_classes << last_class if is_last
-      name, url = crumb
+      name, url, options = crumb
+      options = {} unless options.is_a?(Hash)
       can_link = url && links && (!is_last || last_crumb_linked)
-      html_content = can_link ? link_to((truncate.present? ? name.truncate(truncate) : name), url) : content_tag(:span, (truncate.present? ? name.truncate(truncate) : name))
+      link_html_options = options[:link_html_options] || {}
+      link_html_options[:class] = html_classes
       if with_microdata
         item_title = content_tag(:span, (truncate.present? ? name.truncate(truncate) : name), :itemprop => "title")
         html_options = {:itemscope => true, :itemtype => data_definition_url("Breadcrumb")}
-        html_content = can_link ? link_to(item_title, url, :class => html_classes, :itemprop => "url") : item_title
+        link_html_options[:itemprop] = "url"
+        html_content = can_link ? link_to(item_title, url, link_html_options) : item_title
         content_tag(:div, html_content, html_options)
       else
-        can_link ? link_to((truncate.present? ? name.truncate(truncate) : name), url, :class => html_classes) : (truncate.present? ? name.truncate(truncate) : name)
+        can_link ? link_to((truncate.present? ? name.truncate(truncate) : name), url, link_html_options) : (truncate.present? ? name.truncate(truncate) : name)
       end
     end
     
     def crumb_to_html_list(crumb, links, li_class, first_class, last_class, is_first, is_last, with_microdata, last_crumb_linked, truncate)
-      name, url = crumb
+      name, url, options = crumb
+      options = {} unless options.is_a?(Hash)
       can_link = url && links && (!is_last || last_crumb_linked)
       html_classes = []
       html_classes << first_class if is_first
@@ -95,9 +99,11 @@ module Crummy
         html_options[:itemscope] = true
         html_options[:itemtype]  = data_definition_url("Breadcrumb")
         item_title = content_tag(:span, (truncate.present? ? name.truncate(truncate) : name), :itemprop => "title")
-        html_content = can_link ? link_to(item_title, url, :itemprop => "url") : item_title
+        link_html_options = options[:link_html_options] || {}
+        link_html_options[:itemprop] = "url"
+        html_content = can_link ? link_to(item_title, url, link_html_options) : item_title
       else
-        html_content = can_link ? link_to((truncate.present? ? name.truncate(truncate) : name), url) : content_tag(:span, (truncate.present? ? name.truncate(truncate) : name))
+        html_content = can_link ? link_to((truncate.present? ? name.truncate(truncate) : name), url, options[:link_html_options]) : content_tag(:span, (truncate.present? ? name.truncate(truncate) : name))
       end
       content_tag(:li, html_content, html_options)
     end
