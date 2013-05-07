@@ -33,9 +33,9 @@ module Crummy
 
           _record = instance.instance_variable_get("@#{name}") unless name.kind_of?(String)
           if _record and _record.respond_to? :to_param
-            instance.add_crumb(_record.to_s, url || instance.url_for(_record))
+            instance.add_crumb(_record.to_s, url || instance.url_for(_record), options)
           else 
-            instance.add_crumb(name, url)
+            instance.add_crumb(name, url, options)
           end
         
           # FIXME: url = instance.url_for(name) if name.respond_to?("to_param") && url.nil?
@@ -56,8 +56,8 @@ module Crummy
       #   add_crumb("Home", "/")
       #   add_crumb("Business") { |instance| instance.business_path }
       #
-      def add_crumb(name, url=nil)
-        crumbs.push [name, url]
+      def add_crumb(name, url=nil, options={})
+        crumbs.push [name, url, options]
       end
 
       def clear_crumbs

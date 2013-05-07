@@ -49,6 +49,15 @@ Then in your view:
 <%= render_crumbs %>
 ```
 
+## Html options for breadcrumb link
+
+You can set the html options with *link_html_options*.
+These are added to the *a* tag.
+
+```ruby
+add_crumb "Home", '/', link_html_options: {title: "my link title"}
+```
+
 ## Options for render\_crumbs
 
 render\_crumbs renders the list of crumbs as either html or xml
