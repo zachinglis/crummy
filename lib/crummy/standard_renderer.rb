@@ -73,7 +73,6 @@ module Crummy
       name, url, options = crumb
       options = {} unless options.is_a?(Hash)
       can_link = url && links && (!is_last || last_crumb_linked)
-      html_content = can_link ? link_to((truncate.present? ? name.truncate(truncate) : name), url, options[:link_html_options]) : content_tag(:span, (truncate.present? ? name.truncate(truncate) : name))
       link_html_options = options[:link_html_options] || {}
       link_html_options[:class] = html_classes
       if with_microdata
