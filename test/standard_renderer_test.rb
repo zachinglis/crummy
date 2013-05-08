@@ -71,7 +71,7 @@ class StandardRendererTest < Test::Unit::TestCase
       config.microdata = false
     end
 
-    assert_equal('<a href="url" class="first last" title="link title">name</a>',
+    assert_dom_equal('<a href="url" class="first last" title="link title">name</a>',
                  renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html))
 
     assert_equal('name',
@@ -90,7 +90,7 @@ class StandardRendererTest < Test::Unit::TestCase
       config.microdata = true
     end
 
-    assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" class="first last" itemprop="url" title="link title"><span itemprop="title">name</span></a></div>',
+    assert_dom_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" class="first last" itemprop="url" title="link title"><span itemprop="title">name</span></a></div>',
                  renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html))
 
     assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></div>',
