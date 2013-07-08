@@ -50,9 +50,11 @@ module Crummy
         options[:li_class] ||= Crummy.configuration.li_class
         options[:ul_class] ||= Crummy.configuration.ul_class
         options[:ul_id] ||= Crummy.configuration.ul_id
+        options[:ul_id] = nil if options[:ul_id].blank?
+
         crumb_string = crumbs.collect do |crumb|
-          crumb_to_html_list(crumb, options[:links], options[:li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata], options[:last_crumb_linked], options[:truncate])
-        end.reduce { |memo, obj| memo << options[:separator] << obj }
+          crumb_to_html_list(crumb, options[:links], options[:li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata], options[:last_crumb_linked], options[:truncate], options[:separator])
+        end.reduce { |memo, obj| memo << obj }
         crumb_string = content_tag(:ul, crumb_string, :class => options[:ul_class], :id => options[:ul_id])
         crumb_string
       when :xml
@@ -86,7 +88,7 @@ module Crummy
       end
     end
     
-    def crumb_to_html_list(crumb, links, li_class, first_class, last_class, is_first, is_last, with_microdata, last_crumb_linked, truncate)
+    def crumb_to_html_list(crumb, links, li_class, first_class, last_class, is_first, is_last, with_microdata, last_crumb_linked, truncate, separator='')
       name, url, options = crumb
       options = {} unless options.is_a?(Hash)
       can_link = url && links && (!is_last || last_crumb_linked)
@@ -105,6 +107,7 @@ module Crummy
       else
         html_content = can_link ? link_to((truncate.present? ? name.truncate(truncate) : name), url, options[:link_html_options]) : content_tag(:span, (truncate.present? ? name.truncate(truncate) : name))
       end
+      html_content += separator unless separator.blank? || is_last
       content_tag(:li, html_content, html_options)
     end
   
