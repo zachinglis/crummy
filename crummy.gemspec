@@ -6,6 +6,7 @@ Gem::Specification.new do |s|
   s.name = "crummy"
   s.version = Crummy::VERSION
   s.platform    = Gem::Platform::RUBY
+  s.licenses    = ['MIT']
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Zach Inglis", "Andrew Nesbitt"]
