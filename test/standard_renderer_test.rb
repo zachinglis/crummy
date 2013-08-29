@@ -103,6 +103,25 @@ class StandardRendererTest < Test::Unit::TestCase
                  renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html_list, :last_crumb_linked => false))
   end
 
+  def test_inline_configuration
+    renderer = StandardRenderer.new
+    Crummy.configure do |config|
+      config.microdata = true
+      config.last_crumb_linked = true
+    end
+
+    assert_no_match(/itemscope/, renderer.render_crumbs([['name', 'url']], :microdata => false))
+    assert_match(/href/, renderer.render_crumbs([['name', 'url']], :last_crumb_linked => true))
+
+    Crummy.configure do |config|
+      config.microdata = false
+      config.last_crumb_linked = true
+    end
+
+    assert_match(/itemscope/, renderer.render_crumbs([['name', 'url']], :microdata => true))
+    assert_no_match(/href/, renderer.render_crumbs([['name', 'url']], :last_crumb_linked => false))
+  end
+
   def test_configuration
     renderer = StandardRenderer.new
     # check defaults
