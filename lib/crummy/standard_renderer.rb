@@ -35,7 +35,7 @@ module Crummy
       options[:links] ||= Crummy.configuration.links
       options[:first_class] ||= Crummy.configuration.first_class
       options[:last_class] ||= Crummy.configuration.last_class
-      options[:microdata] ||= Crummy.configuration.microdata
+      options[:microdata] ||= Crummy.configuration.microdata if options[:microdata].nil?
       options[:truncate] ||= Crummy.configuration.truncate if options[:truncate]
       options[:last_crumb_linked] = Crummy.configuration.last_crumb_linked if options[:last_crumb_linked].nil?
 
