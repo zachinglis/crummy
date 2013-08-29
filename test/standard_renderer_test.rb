@@ -65,6 +65,26 @@ class StandardRendererTest < Test::Unit::TestCase
                  renderer.render_crumbs([['name', 'url']], :format => :html_list, :ul_id => "crumbid", :ul_class => "crumbclass", :li_class => "liclass", :last_crumb_linked => false))
   end
 
+  def test_input_object_mutation
+    renderer = StandardRenderer.new
+    Crummy.configure do |config|
+      config.microdata = false
+    end
+
+    name1 = 'name1'
+    url1 = nil
+    name2 = 'name2'
+    url2 = nil
+
+    renderer.render_crumbs([[name1, url1], [name2, url2]], :format => :html, :microdata => false)
+
+    # Rendering the crumbs shouldn't alter the input objects.
+    assert_equal('name1', name1);
+    assert_equal(nil, url2);
+    assert_equal('name2', name2);
+    assert_equal(nil, url2);
+  end
+
   def test_link_html_options
     renderer = StandardRenderer.new
     Crummy.configure do |config|
