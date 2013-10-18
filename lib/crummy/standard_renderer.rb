@@ -38,6 +38,7 @@ module Crummy
       options[:microdata] ||= Crummy.configuration.microdata if options[:microdata].nil?
       options[:truncate] ||= Crummy.configuration.truncate if options[:truncate]
       options[:last_crumb_linked] = Crummy.configuration.last_crumb_linked if options[:last_crumb_linked].nil?
+      options[:right_side] ||= Crummy.configuration.right_side
 
       case options[:format]
       when :html
@@ -46,7 +47,7 @@ module Crummy
 #          crumb_string << options[:separator] unless(index == 0)
 #          crumb_string << crumb_to_html(crumb, options[:links], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata], options[:last_crumb_linked], options[:truncate])
 #        end
-        crumb_string = crumbs.map{|crumb|crumb_to_html(crumb, options[:links], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata], options[:last_crumb_linked], options[:truncate])}.join(options[:separator]).html_safe
+        crumb_string = crumbs.map{|crumb|options[:right_side] ? nil : crumb_to_html(crumb, options[:links], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata], options[:last_crumb_linked], options[:truncate])}.compact.join(options[:separator]).html_safe
         crumb_string
       when :html_list
         # Let's set values for special options of html_list format
@@ -59,7 +60,7 @@ module Crummy
 #        crumbs.each do |crumb|
 #          crumb_string << crumb_to_html_list(crumb, options[:links], options[:li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata], options[:last_crumb_linked], options[:truncate], options[:separator])
 #        end
-        crumb_string = crumbs.map{|crumb|crumb_to_html_list(crumb, options[:links], options[:li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata], options[:last_crumb_linked], options[:truncate], options[:separator])}.join.html_safe
+        crumb_string = crumbs.map{|crumb|options[:right_side] ? nil : crumb_to_html_list(crumb, options[:links], options[:li_class], options[:first_class], options[:last_class], (crumb == crumbs.first), (crumb == crumbs.last), options[:microdata], options[:last_crumb_linked], options[:truncate], options[:separator])}.compact.join.html_safe
         crumb_string = content_tag(:ul, crumb_string, :class => options[:ul_class], :id => options[:ul_id])
         crumb_string
       when :xml
