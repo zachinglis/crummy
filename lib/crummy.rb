@@ -15,6 +15,7 @@ module Crummy
     attr_accessor :html_separator
     attr_accessor :xml_separator
     attr_accessor :html_list_separator
+    attr_accessor :html_list_right_separator
     attr_accessor :first_class
     attr_accessor :last_class
     attr_accessor :ul_id
@@ -30,6 +31,7 @@ module Crummy
       @html_separator = " &raquo; ".html_safe
       @xml_separator = "crumb"
       @html_list_separator = ''
+      @html_list_right_separator = ''
       @skip_if_blank = true
       @links = true
       @first_class = ''
