@@ -26,7 +26,7 @@ class StandardRendererTest < Test::Unit::TestCase
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :first_class => 'first', :last_class => 'last', :format => :html))
     assert_equal('<ul class=""><li class="first li_class"><a href="url1">name1</a></li><li class="li_class"><a href="url2">name2</a></li><li class="last li_class"><a href="url3">name3</a></li></ul>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2'], ['name3', 'url3']], :li_class => "li_class", :first_class => 'first', :last_class => 'last', :format => :html_list))
-    assert_equal('<ul class=""><li class="first li_class"><a href="url1">name1</a> / </li><li class="li_class"><a href="url2">name2</a> / </li><li class="last li_class"><a href="url3">name3</a></li></ul>',
+    assert_equal('<ul class=""><li class="first li_class"><a href="url1">name1</a></li><li> / </li><li class="li_class"><a href="url2">name2</a></li><li> / </li><li class="last li_class"><a href="url3">name3</a></li></ul>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2'], ['name3', 'url3']], :li_class => "li_class", :first_class => 'first', :last_class => 'last', :format => :html_list, :separator => " / "))
     assert_equal('<crumb href="url1">name1</crumb><crumb href="url2">name2</crumb>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :first_class => 'first', :last_class => 'last', :format => :xml))
@@ -52,7 +52,7 @@ class StandardRendererTest < Test::Unit::TestCase
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))
     assert_equal('<ul class=""><li class="first li_class"><a href="url1">name1</a></li><li class="li_class"><a href="url2">name2</a></li><li class="last li_class"><span>name3</span></li></ul>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2'], ['name3', 'url3']], :li_class => "li_class", :first_class => 'first', :last_class => 'last', :format => :html_list, :last_crumb_linked => false))
-    assert_equal('<ul class=""><li class="first li_class"><a href="url1">name1</a> / </li><li class="li_class"><a href="url2">name2</a> / </li><li class="last li_class"><span>name3</span></li></ul>',
+    assert_equal('<ul class=""><li class="first li_class"><a href="url1">name1</a></li><li> / </li><li class="li_class"><a href="url2">name2</a></li><li> / </li><li class="last li_class"><span>name3</span></li></ul>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2'], ['name3', 'url3']], :li_class => "li_class", :first_class => 'first', :last_class => 'last', :format => :html_list, :separator => " / ", :last_crumb_linked => false))
     assert_equal('<crumb href="url1">name1</crumb><crumb href="url2">name2</crumb>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :first_class => 'first', :last_class => 'last', :format => :xml, :last_crumb_linked => false))

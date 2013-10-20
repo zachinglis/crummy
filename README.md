@@ -58,6 +58,13 @@ These are added to the *a* tag.
 add_crumb "Home", '/', link_html_options: {title: "my link title"}
 ```
 
+##You can set html instead text in first parameter.
+If tag <code>a</code> present in this html, tag a not be a wrapper.
+
+```ruby
+add_crumb "<a class='glyphicons shield' href='/support'><i></i>Support</a>".html_safe, "", {}
+```
+
 ## Options for render\_crumbs
 
 render\_crumbs renders the list of crumbs as either html or xml
@@ -103,6 +110,7 @@ microdata: true
 
 With this option, output will be blank if there are no breadcrumbs.
 
+
 ### Examples
 
 ```ruby
@@ -113,6 +121,13 @@ render_crumbs format: :html_list  #=> <ul class="" id=""><li class=""><a href="/
 render_crumbs format: :html_list, :microdata => true
                                   #=> <ul class="" id=""><li class="" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
                                   #     <a href="/" itemprop="url"><span itemprop="title">Home</span></a></li></ul>
+add_crumb support_link, {:right_side => true, :links => "/support", :li_right_class => "pull-right hidden-phone"}
+                                  #=> <li class="pull-right hidden-phone">
+                                  #=>  <span><a class="glyphicons shield" href="/support">
+                                  #=>   <i></i>Support</a>
+                                  #=>  </span>
+                                  #=> </li>
+                                  #=> <li class="divider pull-right hidden-phone"></li>
 ```
 
 A crumb with a nil argument for the link will output an unlinked crumb.
@@ -147,17 +162,27 @@ Possible parameters for configuration are:
 :html_separator
 :xml_separator
 :html_list_separator
+:html_list_right_separator
 :first_class
 :last_class
 :ul_id
 :ul_class
 :li_class
+:li_right_class
 :microdata
 :last_crumb_linked
 :truncate
+:right_side
 ```
 
 See `lib/crummy.rb` for a list of these parameters and their defaults.
+
+###Individually for each crumb configuration:
+```ruby
+add_crumb support_link, {:right_side => true, :links => "/support", : li_class => "my_class", :li_right_class => "pull-right hidden-phone"}
+```
+Simple add that parameter to options hash. 
+
 
 ## Live example application
 
