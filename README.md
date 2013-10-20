@@ -13,6 +13,10 @@ Simply add the dependency to your Gemfile:
 ```ruby
 gem "crummy", "~> 1.7.2"
 ```
+or:
+```ruby
+gem 'crummy', :git => 'https://github.com/r72cccp/crummy.git', :branch => 'master'
+```
 
 # Example
 
