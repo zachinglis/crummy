@@ -13,8 +13,9 @@ module Crummy
     attr_accessor :links
     attr_accessor :skip_if_blank
     attr_accessor :html_separator
-	  attr_accessor :html_right_separator
+    attr_accessor :html_right_separator
     attr_accessor :xml_separator
+    attr_accessor :xml_right_separator
     attr_accessor :html_list_separator
     attr_accessor :html_list_right_separator
     attr_accessor :first_class
@@ -30,8 +31,9 @@ module Crummy
     def initialize
       @format = :html
       @html_separator = " &raquo; ".html_safe
-	    @html_right_separator = " &raquo; ".html_safe
+      @html_right_separator = " &raquo; ".html_safe
       @xml_separator = "crumb"
+      @xml_right_separator = "crumb"
       @html_list_separator = ''
       @html_list_right_separator = ''
       @skip_if_blank = true
