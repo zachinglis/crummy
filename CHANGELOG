@@ -1,3 +1,9 @@
+1.8.0
+* [ADDED] You can now set each parameters individually for each crumb
+* [ADDED] You can now set each crumb on right or left side
+* [ADDED] You can now use a html in a crumb name
+* [REFACTORED] Don't render empty html_options for tags.
+
 1.7.2
 * [ADDED] :truncate option to shorten text in breadcrumbs
 * [ADDED] Added ability to pass html link options through to renderer
