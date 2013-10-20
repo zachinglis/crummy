@@ -15,6 +15,7 @@ module Crummy
     attr_accessor :html_separator
     attr_accessor :xml_separator
     attr_accessor :html_list_separator
+    attr_accessor :html_list_right_separator
     attr_accessor :first_class
     attr_accessor :last_class
     attr_accessor :ul_id
@@ -23,12 +24,14 @@ module Crummy
     attr_accessor :microdata
     attr_accessor :last_crumb_linked
     attr_accessor :truncate
+    attr_accessor :right_side
 
     def initialize
       @format = :html
       @html_separator = " &raquo; ".html_safe
       @xml_separator = "crumb"
       @html_list_separator = ''
+      @html_list_right_separator = ''
       @skip_if_blank = true
       @links = true
       @first_class = ''
@@ -39,6 +42,7 @@ module Crummy
       @microdata = false
       @last_crumb_linked = true
       @truncate = nil
+      @right_side = false
     end
 
     def active_li_class=(class_name)
