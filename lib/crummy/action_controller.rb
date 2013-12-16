@@ -28,16 +28,20 @@ module Crummy
             end
           end
 
-          # Get the return value of the name if its a proc.
-          name = name.call(instance) if name.is_a?(Proc)
-
-          _record = instance.instance_variable_get("@#{name}") unless name.kind_of?(String)
-          if _record and _record.respond_to? :to_param
-            instance.add_crumb(_record.to_s, url || instance.url_for(_record), options)
-          else 
-            instance.add_crumb(name, url, options)
+          if name.is_a?(Proc)
+            instance.add_crumb(name.call(instance), url, options)
+            return
           end
-        
+
+          unless name.kind_of?(String)
+            _record = instance.instance_variable_get("@#{name}")
+            if _record and _record.respond_to? :to_param
+              instance.add_crumb(_record.to_s, url || instance.url_for(_record), options)
+              return
+            end
+          end
+
+          instance.add_crumb(name, url, options)
           # FIXME: url = instance.url_for(name) if name.respond_to?("to_param") && url.nil?
           # FIXME: Add ||= for the name, url above
         end
