@@ -67,9 +67,7 @@ add_crumb "<a class='glyphicons shield' href='/support'><i></i>Support</a>".html
 
 ## Options for render\_crumbs
 
-render\_crumbs renders the list of crumbs as either html or xml
-
-It takes 3 options
+`render_crumbs` renders the list of crumbs as either html or xml
 
 The output format. Can either be :xml or :html or :html\_list. Defaults
 to :html
@@ -89,27 +87,28 @@ separator: string
 Render links in the output. Defaults to *true*
 
 ```ruby
-links: boolean
-
-skip_if_blank: true
+links: false
 ```
 
 Render
 [Richsnipet](http:/support.google.com/webmasters/bin/answer.py?hl=en&answer=99170&topic=1088472&ctx=topic/)
 Default to *false*
 
-```
-last_crumb_linked: false
+```ruby
+microdata: true
 ```
 
 Optionally disable linking of the last crumb, Defaults to *true*
 
 ```ruby
-microdata: true
+last_crumb_linked: false
 ```
 
 With this option, output will be blank if there are no breadcrumbs.
 
+```ruby
+skip_if_blank: true
+```
 
 ### Examples
 
