@@ -20,9 +20,9 @@ module Crummy
     #   render_crumbs                         #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
     #   render_crumbs :separator => ' | '     #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
     #   render_crumbs :format => :xml         #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
-    #   render_crumbs :format => :html_list   #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
+    #   render_crumbs :format => :html_list   #=> <ol class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ol>
     #
-    # With :format => :html_list you can specify additional params: li_class, ul_class, ul_id
+    # With :format => :html_list you can specify additional params: li_class, ol_class, ol_id
     # The only argument is for the separator text. It does not assume you want spaces on either side so you must specify. Defaults to +&raquo;+
     #
     #   render_crumbs(" . ")  #=> <a href="/">Home</a> . <a href="/businesses">Businesses</a>
@@ -64,11 +64,11 @@ module Crummy
       when :html_list
         # Let's set values for special options of html_list format
         options[:li_class] ||= Crummy.configuration.li_class
-        options[:ul_class] ||= Crummy.configuration.ul_class
-        options[:ul_id] ||= Crummy.configuration.ul_id
-        options[:ul_id] = nil if options[:ul_id].blank?
+        options[:ol_class] ||= Crummy.configuration.ol_class
+        options[:ol_id] ||= Crummy.configuration.ol_id
+        options[:ol_id] = nil if options[:ol_id].blank?
 
-        crumb_string = crumbs.map{|crumb|local_global.call(crumb, options, :right_side) ? nil : 
+        crumb_string = crumbs.map{|crumb|local_global.call(crumb, options, :right_side) ? nil :
                         crumb_to_html_list(crumb,
                                            local_global.call(crumb, options, :links),
                                            local_global.call(crumb, options, :li_class),
@@ -94,10 +94,10 @@ module Crummy
                                            local_global.call(crumb, options, :last_crumb_linked),
                                            local_global.call(crumb, options, :truncate),
                                            local_global.call(crumb, options, :right_separator))}.compact.join.html_safe
-        crumb_string = content_tag(:ul,
+        crumb_string = content_tag(:ol,
                                    crumb_string+crumb_right_string,
-                                   :class => options[:ul_class],
-                                   :id => options[:ul_id])
+                                   :class => options[:ol_class],
+                                   :id => options[:ol_id])
         crumb_string
       when :xml
         crumbs.collect do |crumb|
@@ -154,7 +154,7 @@ module Crummy
       else
         html_content = can_link ? link_to((truncate.present? ? name.truncate(truncate) : name), url, options[:link_html_options]) : content_tag(:span, (truncate.present? ? name.truncate(truncate) : name))
       end
-      content_tag(:li, html_content, html_options)+(/<\/li/ =~ separator ? 
+      content_tag(:li, html_content, html_options)+(/<\/li/ =~ separator ?
                                         separator : content_tag(:li, separator) unless separator.blank? || is_last)
     end
 
@@ -168,4 +168,3 @@ module Crummy
     end
   end
 end
-

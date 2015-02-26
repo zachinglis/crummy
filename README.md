@@ -116,10 +116,10 @@ skip_if_blank: true
 render_crumbs                     #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
 render_crumbs separator: ' | '    #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
 render_crumbs format: :xml        #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
-render_crumbs format: :html_list  #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
+render_crumbs format: :html_list  #=> <ol class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ol>
 render_crumbs format: :html_list, :microdata => true
-                                  #=> <ul class="" id=""><li class="" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
-                                  #     <a href="/" itemprop="url"><span itemprop="title">Home</span></a></li></ul>
+                                  #=> <ol class="" id=""><li class="" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+                                  #     <a href="/" itemprop="url"><span itemprop="title">Home</span></a></li></ol>
 add_crumb support_link, {:right_side => true, :links => "/support", :li_right_class => "pull-right hidden-phone"}
                                   #=> <li class="pull-right hidden-phone">
                                   #=>  <span><a class="glyphicons shield" href="/support">
@@ -131,7 +131,7 @@ add_crumb support_link, {:right_side => true, :links => "/support", :li_right_cl
 
 A crumb with a nil argument for the link will output an unlinked crumb.
 
-With `format: :html_list` you can specify additional `params: :li_class, :ul_class, :ul_id`
+With `format: :html_list` you can specify additional `params: :li_class, :ol_class, :ol_id`
 
 ### App-wide configuration
 
@@ -164,8 +164,8 @@ Possible parameters for configuration are:
 :html_list_right_separator
 :first_class
 :last_class
-:ul_id
-:ul_class
+:ol_id
+:ol_class
 :li_class
 :li_right_class
 :microdata
