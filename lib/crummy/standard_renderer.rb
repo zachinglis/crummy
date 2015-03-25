@@ -104,7 +104,7 @@ module Crummy
       crumb_options = options[:crumb_options].merge(crumb_options)
 
       name = name.truncate(crumb_options[:truncate]) if crumb_options[:truncate].present?
-      name = h(name) if crumb_options[:escape]
+      name = crumb_options[:escape] == false ? name.html_safe : h(name)
 
       html_classes = []
       html_classes << options[:default_crumb_class] if options[:default_crumb_class].present?
