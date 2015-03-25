@@ -42,7 +42,6 @@ module Crummy
       options[:first_crumb_class] ||= Crummy.configuration.first_crumb_class
       options[:last_crumb_class] ||= Crummy.configuration.last_crumb_class
       options[:link_last_crumb] ||= Crummy.configuration.link_last_crumb
-      options[:container_html] ||= {}
 
       options[:crumb_options] = {}
       options[:crumb_options][:truncate] = options.delete(:truncate) || Crummy.configuration.truncate
@@ -60,7 +59,7 @@ module Crummy
         inner_html = crumbs.each_with_index.map{ |crumb, index|
           crumb_to_html_list(crumb, index, crumbs.count, options)
         }.compact.join(options[:separator]).html_safe
-        content_tag(:ul, inner_html, options[:container_html])
+        content_tag(:ul, inner_html, class: options[:container_class])
       when :xml
         crumbs.each_with_index.map{ |crumb, index|
           crumb_to_xml(crumb, index, crumbs.count, options)
