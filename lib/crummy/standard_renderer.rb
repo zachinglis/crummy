@@ -65,6 +65,10 @@ module Crummy
         crumbs.each_with_index.map{ |crumb, index|
           crumb_to_xml(crumb, index, crumbs.count, options)
         }.compact.join(options[:separator]).html_safe
+      when :json
+        crumbs.each_with_index.map{ |crumb, index|
+          crumb_to_json(crumb, index, crumbs.count, options)
+        }.to_json
       else
         raise ArgumentError, "Unknown breadcrumb output format"
       end
@@ -94,10 +98,10 @@ module Crummy
       content_tag(separator, name, href: (url && options[:render_with_links] ? url : nil))
     end
 
-    def crumb_to_xml(crumb, index, total, options)
-      name, url, options = normalize_crumb(crumb, index, total, options)
+    def crumb_to_json(crumb, index, total, options)
+      name, url, crumb_options = normalize_crumb(crumb, index, total, options)
 
-      content_tag(separator, name, href: (url && options[:render_with_links] ? url : nil))
+      { name: name, href: (url && options[:render_with_links] ? url : nil) }
     end
 
     def normalize_crumb(crumb, index, total, options)
