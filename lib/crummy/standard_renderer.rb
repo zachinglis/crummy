@@ -35,7 +35,7 @@ module Crummy
 
       options[:format] ||= Crummy.configuration.format
       options[:right_to_left] ||= Crummy.configuration.right_to_left
-      options[:separator] ||= Crummy.configuration.send(:"#{options[:format]}_#{'right_to_left_' if options[:right_to_left]}separator")
+      options[:separator] ||= Crummy.configuration.send(options[:right_to_left] ? :right_to_left_separator : :separator)
       options[:render_with_links] ||= Crummy.configuration.render_with_links
       options[:container_class] ||= Crummy.configuration.container_class
       options[:default_crumb_class] ||= Crummy.configuration.default_crumb_class
@@ -48,6 +48,7 @@ module Crummy
       options[:crumb_options][:truncate] = options.delete(:truncate) || Crummy.configuration.truncate
       options[:crumb_options][:escape] = options.delete(:escape) || Crummy.configuration.escape
       options[:crumb_options][:html] = options.delete(:crumb_html) || Crummy.configuration.crumb_html
+      options[:crumb_options][:xml] = options.delete(:crumb_xml) || Crummy.configuration.crumb_xml
       options[:crumb_options][:wrap_with] = options.delete(:wrap_with) || Crummy.configuration.wrap_with
 
       crumbs = crumbs.reverse if options[:right_to_left]
@@ -62,9 +63,10 @@ module Crummy
         end
         html
       when :xml
-        crumbs.each_with_index.map{ |crumb, index|
+        xml = crumbs.each_with_index.map{ |crumb, index|
           crumb_to_xml(crumb, index, crumbs.count, options)
-        }.compact.join(options[:separator]).html_safe
+        }.compact.join.html_safe
+        content_tag(:crumbs, xml)
       when :json
         crumbs.each_with_index.map{ |crumb, index|
           crumb_to_json(crumb, index, crumbs.count, options)
@@ -93,9 +95,11 @@ module Crummy
     end
 
     def crumb_to_xml(crumb, index, total, options)
-      name, url, options = normalize_crumb(crumb, index, total, options)
+      name, url, crumb_options = normalize_crumb(crumb, index, total, options)
 
-      content_tag(separator, name, href: (url && options[:render_with_links] ? url : nil))
+      crumb_options[:xml][:href] = url if url && options[:render_with_links]
+
+      content_tag(:crumb, name, crumb_options[:xml])
     end
 
     def crumb_to_json(crumb, index, total, options)
