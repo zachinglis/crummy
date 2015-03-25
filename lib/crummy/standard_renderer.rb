@@ -30,26 +30,9 @@ module Crummy
     #
     def render_crumbs(crumbs, options = {})
 
-      options[:skip_if_blank] ||= Crummy.configuration.skip_if_blank
+      options = normailize_options(options)
+
       return '' if options[:skip_if_blank] && crumbs.count < 1
-
-      options[:format] ||= Crummy.configuration.format
-      options[:right_to_left] ||= Crummy.configuration.right_to_left
-      options[:separator] ||= Crummy.configuration.send(options[:right_to_left] ? :right_to_left_separator : :separator)
-      options[:render_with_links] ||= Crummy.configuration.render_with_links
-      options[:container_class] ||= Crummy.configuration.container_class
-      options[:default_crumb_class] ||= Crummy.configuration.default_crumb_class
-      options[:first_crumb_class] ||= Crummy.configuration.first_crumb_class
-      options[:last_crumb_class] ||= Crummy.configuration.last_crumb_class
-      options[:link_last_crumb] ||= Crummy.configuration.link_last_crumb
-      options[:container] ||= Crummy.configuration.container
-
-      options[:crumb_options] = {}
-      options[:crumb_options][:truncate] = options.delete(:truncate) || Crummy.configuration.truncate
-      options[:crumb_options][:escape] = options.delete(:escape) || Crummy.configuration.escape
-      options[:crumb_options][:html] = options.delete(:crumb_html) || Crummy.configuration.crumb_html
-      options[:crumb_options][:xml] = options.delete(:crumb_xml) || Crummy.configuration.crumb_xml
-      options[:crumb_options][:wrap_with] = options.delete(:wrap_with) || Crummy.configuration.wrap_with
 
       crumbs = crumbs.reverse if options[:right_to_left]
 
@@ -81,11 +64,9 @@ module Crummy
     def crumb_to_html(crumb, index, total, options)
       name, url, crumb_options = normalize_crumb(crumb, index, total, options)
 
-      can_link = url && options[:render_with_links] && ( index != total || options[:last_crumb_linked] )
-
-      if can_link && crumb_options[:wrap_with].present?
+      if url && crumb_options[:wrap_with].present?
         content_tag(crumb_options[:wrap_with].to_sym, link_to(name, url), crumb_options[:html])
-      elsif can_link
+      elsif url
         link_to(name, url, crumb_options[:html])
       elsif crumb_options[:wrap_with].present?
         content_tag(crumb_options[:wrap_with].to_sym, content_tag(:span, name), crumb_options[:html])
@@ -105,7 +86,7 @@ module Crummy
     def crumb_to_json(crumb, index, total, options)
       name, url, crumb_options = normalize_crumb(crumb, index, total, options)
 
-      { name: name, href: (url && options[:render_with_links] ? url : nil) }
+      { name: name, href: (url if options[:render_with_links]) }
     end
 
     def normalize_crumb(crumb, index, total, options)
@@ -114,8 +95,12 @@ module Crummy
 
       crumb_options = options[:crumb_options].merge(crumb_options)
 
+      total -= 1
+
       name = name.truncate(crumb_options[:truncate]) if crumb_options[:truncate].present?
       name = crumb_options[:escape] == false ? name.html_safe : h(name)
+
+      url = options[:render_with_links] && ( index != total || options[:link_last_crumb] ) ? url : nil
 
       html_classes = []
       html_classes << options[:default_crumb_class] if options[:default_crumb_class].present?
@@ -129,6 +114,35 @@ module Crummy
       end
 
       [name, url, crumb_options]
+    end
+
+    def normailize_options(options)
+      normalized_options = {}
+
+      normalized_options[:skip_if_blank] = option_or_default(:skip_if_blank, options)
+      normalized_options[:format] = option_or_default(:format, options)
+      normalized_options[:right_to_left] = option_or_default(:right_to_left, options)
+      normalized_options[:separator] = option_or_default(options[:right_to_left] ? :right_to_left_separator : :separator, options)
+      normalized_options[:render_with_links] = option_or_default(:render_with_links, options)
+      normalized_options[:container_class] = option_or_default(:container_class, options)
+      normalized_options[:default_crumb_class] = option_or_default(:default_crumb_class, options)
+      normalized_options[:first_crumb_class] = option_or_default(:first_crumb_class, options)
+      normalized_options[:last_crumb_class] = option_or_default(:last_crumb_class, options)
+      normalized_options[:link_last_crumb] = option_or_default(:link_last_crumb, options)
+      normalized_options[:container] = option_or_default(:container, options)
+
+      normalized_options[:crumb_options] = {}
+      normalized_options[:crumb_options][:truncate] = option_or_default(:truncate, options)
+      normalized_options[:crumb_options][:escape] = option_or_default(:escape, options)
+      normalized_options[:crumb_options][:html] = option_or_default(:crumb_html, options)
+      normalized_options[:crumb_options][:xml] = option_or_default(:crumb_xml, options)
+      normalized_options[:crumb_options][:wrap_with] = option_or_default(:wrap_with, options)
+
+      normalized_options
+    end
+
+    def option_or_default(option, options)
+      options.has_key?(option.to_sym) ? options[option.to_sym] : Crummy.configuration.send(option.to_sym)
     end
   end
 end
