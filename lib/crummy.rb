@@ -17,8 +17,6 @@ module Crummy
     attr_accessor :html_right_to_left_separator
     attr_accessor :xml_separator
     attr_accessor :xml_right_to_left_separator
-    attr_accessor :html_list_separator
-    attr_accessor :html_list_right_to_left_separator
     attr_accessor :default_crumb_class
     attr_accessor :container_class
     attr_accessor :first_crumb_class
@@ -27,6 +25,8 @@ module Crummy
     attr_accessor :truncate
     attr_accessor :escape
     attr_accessor :crumb_html
+    attr_accessor :container
+    attr_accessor :wrap_with
 
     def initialize
       @format = :html
@@ -35,8 +35,6 @@ module Crummy
       @html_right_to_left_separator = " &laquo; ".html_safe
       @xml_separator = 'crumb'
       @xml_right_to_left_separator = 'crumb'
-      @html_list_separator = ''
-      @html_list_right_to_left_separator = ''
       @skip_if_blank = true
       @render_with_links = true
       @default_crumb_class = ''
@@ -47,6 +45,8 @@ module Crummy
       @truncate = nil
       @escape = true
       @crumb_html = {}
+      @container = nil
+      @wrap_with = nil
     end
   end
 

@@ -69,11 +69,18 @@ add_crumb "<span class="fa fa-life-ring"></span> Support", "/", escape: false
 
 `render_crumbs` renders the list of crumbs as either html or xml
 
-The output format. Can either be :xml or :html or :html\_list. Defaults
+The output format. Can either be :xml or :html. Defaults
 to :html
 
 ```ruby
-format: (:html|:html_list|:xml)
+format: (:html|:xml)
+```
+
+Unordered lists and other such structures can be created by specifying :container and :wrap_with.
+The following would output an unordered list:
+
+```ruby
+render_crumbs container: :ul, wrap_with: :li, separator: ''
 ```
 
 The separator text. It does not assume you want spaces on either side so
@@ -154,8 +161,6 @@ Possible parameters for configuration are:
 :html_right_to_left_separator
 :xml_separator
 :xml_right_to_left_separator
-:html_list_separator
-:html_list_right_to_left_separator
 :default_crumb_class
 :crumb_first_class
 :crumb_last_class

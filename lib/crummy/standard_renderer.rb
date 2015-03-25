@@ -42,24 +42,25 @@ module Crummy
       options[:first_crumb_class] ||= Crummy.configuration.first_crumb_class
       options[:last_crumb_class] ||= Crummy.configuration.last_crumb_class
       options[:link_last_crumb] ||= Crummy.configuration.link_last_crumb
+      options[:container] ||= Crummy.configuration.container
 
       options[:crumb_options] = {}
       options[:crumb_options][:truncate] = options.delete(:truncate) || Crummy.configuration.truncate
       options[:crumb_options][:escape] = options.delete(:escape) || Crummy.configuration.escape
       options[:crumb_options][:html] = options.delete(:crumb_html) || Crummy.configuration.crumb_html
+      options[:crumb_options][:wrap_with] = options.delete(:wrap_with) || Crummy.configuration.wrap_with
 
       crumbs = crumbs.reverse if options[:right_to_left]
 
       case options[:format]
       when :html
-        crumbs.each_with_index.map{ |crumb, index|
+        html = crumbs.each_with_index.map{ |crumb, index|
           crumb_to_html(crumb, index, crumbs.count, options)
         }.compact.join(options[:separator]).html_safe
-      when :html_list
-        inner_html = crumbs.each_with_index.map{ |crumb, index|
-          crumb_to_html_list(crumb, index, crumbs.count, options)
-        }.compact.join(options[:separator]).html_safe
-        content_tag(:ul, inner_html, class: options[:container_class])
+        if options[:container].present?
+          html = content_tag(options[:container].to_sym, html, class: options[:container_class])
+        end
+        html
       when :xml
         crumbs.each_with_index.map{ |crumb, index|
           crumb_to_xml(crumb, index, crumbs.count, options)
@@ -74,21 +75,23 @@ module Crummy
     def crumb_to_html(crumb, index, total, options)
       name, url, crumb_options = normalize_crumb(crumb, index, total, options)
 
-      if url && options[:render_with_links] && ( index != total || options[:last_crumb_linked] )
+      can_link = url && options[:render_with_links] && ( index != total || options[:last_crumb_linked] )
+
+      if can_link && crumb_options[:wrap_with].present?
+        content_tag(crumb_options[:wrap_with].to_sym, link_to(name, url), crumb_options[:html])
+      elsif can_link
         link_to(name, url, crumb_options[:html])
+      elsif crumb_options[:wrap_with].present?
+        content_tag(crumb_options[:wrap_with].to_sym, content_tag(:span, name), crumb_options[:html])
       else
         content_tag(:span, name, crumb_options[:html])
       end
     end
 
-    def crumb_to_html_list(crumb, index, total, options)
-      name, url, crumb_options = normalize_crumb(crumb, index, total, options)
+    def crumb_to_xml(crumb, index, total, options)
+      name, url, options = normalize_crumb(crumb, index, total, options)
 
-      if url && options[:render_with_links] && ( index != total || options[:last_crumb_linked] )
-        content_tag(:li, link_to(name, url), crumb_options[:html])
-      else
-        content_tag(:li, content_tag(:span, name), crumb_options[:html])
-      end
+      content_tag(separator, name, href: (url && options[:render_with_links] ? url : nil))
     end
 
     def crumb_to_xml(crumb, index, total, options)
@@ -111,12 +114,10 @@ module Crummy
       html_classes << options[:first_crumb_class] if options[:first_crumb_class].present? && index == 0
       html_classes << options[:last_crumb_class] if options[:last_crumb_class].present? && index == total
 
-      unless html_classes.empty?
-        if crumb_options[:html][:class]
-          crumb_options[:html][:class] = [crumb_options[:html][:class], html_classes].flatten.join(' ')
-        else
-          crumb_options[:html][:class] = html_classes.join(' ')
-        end
+      if html_classes.present? && crumb_options[:html][:class]
+        crumb_options[:html][:class] = [crumb_options[:html][:class], html_classes].flatten.join(' ')
+      elsif html_classes.present?
+        crumb_options[:html][:class] = html_classes.join(' ')
       end
 
       [name, url, crumb_options]
