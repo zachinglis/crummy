@@ -15,7 +15,7 @@ module Crummy
         raise ArgumentError, "Need more arguments" unless name or options[:record] or block_given?
         raise ArgumentError, "Cannot pass url and use block" if url && block_given?
 
-        before_action(options) do |instance|
+        before_filter(options) do |instance|
           url = yield instance if block_given?
           url = instance.send url if url.is_a? Symbol
 
@@ -47,7 +47,7 @@ module Crummy
       end
 
       def clear_crumbs
-        before_action do |instance|
+        before_filter do |instance|
           instance.clear_crumbs
         end
       end
