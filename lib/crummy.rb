@@ -20,8 +20,8 @@ module Crummy
     attr_accessor :html_list_right_separator
     attr_accessor :first_class
     attr_accessor :last_class
-    attr_accessor :ul_id
-    attr_accessor :ul_class
+    attr_accessor :ol_id
+    attr_accessor :ol_class
     attr_accessor :li_class
     attr_accessor :microdata
     attr_accessor :last_crumb_linked
@@ -40,8 +40,8 @@ module Crummy
       @links = true
       @first_class = ''
       @last_class = ''
-      @ul_id = ''
-      @ul_class = ''
+      @ol_id = ''
+      @ol_class = ''
       @li_class = ''
       @microdata = false
       @last_crumb_linked = true
