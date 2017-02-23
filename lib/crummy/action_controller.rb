@@ -7,7 +7,7 @@ module Crummy
       #   add_crumb(lambda { |instance| instance.business_name }, "/")
       #   add_crumb("Business") { |instance| instance.business_path }
       #
-      # Works like a before_filter so +:only+ and +except+ both work.
+      # Works like a before_action so +:only+ and +except+ both work.
       def add_crumb(name, *args)
         options = args.extract_options!
         url = args.first
@@ -15,7 +15,7 @@ module Crummy
         raise ArgumentError, "Need more arguments" unless name or options[:record] or block_given?
         raise ArgumentError, "Cannot pass url and use block" if url && block_given?
 
-        before_filter(options) do |instance|
+        before_action(options) do |instance|
           url = yield instance if block_given?
           url = instance.send url if url.is_a? Symbol
 
@@ -47,7 +47,7 @@ module Crummy
       end
 
       def clear_crumbs
-        before_filter do |instance|
+        before_action do |instance|
           instance.clear_crumbs
         end
       end
