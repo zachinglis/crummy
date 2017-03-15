@@ -27,7 +27,7 @@ end
 class BusinessController < ApplicationController
   add_crumb("Businesses") { |instance| instance.send :businesses_path }
   add_crumb("Comments", only: "comments") { |instance| instance.send :businesses_comments_path }
-  before_filter :load_comment, only: "show"
+  before_action :load_comment, only: "show"
   add_crumb :comment, only: "show"
 
   # Example for nested routes:
