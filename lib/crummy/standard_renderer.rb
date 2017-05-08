@@ -7,52 +7,50 @@ module Crummy
     ActionView::Helpers::TagHelper::BOOLEAN_ATTRIBUTES.merge([:itemscope].to_set)
     include ERB::Util
 
+    attr_accessor :options
+
     # Render the list of crumbs as either html or xml
     #
     # Takes 3 options:
-    # The output format. Can either be xml or html. Default :html
-    #   :format => (:html|:xml)
+    # The output format. Can either be HTML, XML or JSON. Default :html
+    #   :format => (:html|:xml|:json)
     # The separator text. It does not assume you want spaces on either side so you must specify. Default +&raquo;+ for :html and +crumb+ for xml
     #   :separator => string
     # Render links in the output. Default +true+
     #   :link => boolean
     #
     #   Examples:
-    #   render_crumbs                         #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
-    #   render_crumbs :separator => ' | '     #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
-    #   render_crumbs :format => :xml         #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
-    #   render_crumbs :format => :html_list   #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
-    #
-    # With :format => :html_list you can specify additional params: li_class, ul_class, ul_id
-    # The only argument is for the separator text. It does not assume you want spaces on either side so you must specify. Defaults to +&raquo;+
-    #
-    #   render_crumbs(" . ")  #=> <a href="/">Home</a> . <a href="/businesses">Businesses</a>
+    #   render_crumbs                                                #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
+    #   render_crumbs separator: ' | '                               #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
+    #   render_crumbs format: :xml                                   #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
+    #   render_crumbs container: :ul, wrap_with: :li, separator: nil #=> <ul><li><a href="/">Home</a></li><li><a href="/">Businesses</a></li></ul>
     #
     def render_crumbs(crumbs, options = {})
+      self.options = options
 
-      options = normailize_options(options)
+      return '' if get_option(:skip_if_blank) && crumbs.count < 1
 
-      return '' if options[:skip_if_blank] && crumbs.count < 1
+      crumbs = crumbs.reverse if get_option(:right_to_left)
 
-      crumbs = crumbs.reverse if options[:right_to_left]
+      crumbs_count = crumbs.count - 1
 
-      case options[:format]
+      case get_option(:format)
       when :html
-        html = crumbs.each_with_index.map{ |crumb, index|
-          crumb_to_html(crumb, index, crumbs.count, options)
-        }.compact.join(options[:separator]).html_safe
-        if options[:container].present?
-          html = content_tag(options[:container].to_sym, html, class: options[:container_class])
+        html = crumbs.map.with_index { |crumb, index|
+          crumb_to_html(crumb, index, crumbs_count)
+        }.compact.join(get_option(:separator)).html_safe
+        if get_option(:container).present?
+          html = content_tag(get_option(:container).to_sym, html, class: get_option(:container_class).presence)
         end
         html
       when :xml
-        xml = crumbs.each_with_index.map{ |crumb, index|
-          crumb_to_xml(crumb, index, crumbs.count, options)
+        xml = crumbs.map.with_index { |crumb, index|
+          crumb_to_xml(crumb, index, crumbs_count)
         }.compact.join.html_safe
         content_tag(:crumbs, xml)
       when :json
-        crumbs.each_with_index.map{ |crumb, index|
-          crumb_to_json(crumb, index, crumbs.count, options)
+        crumbs.map.with_index { |crumb, index|
+          crumb_to_json(crumb, index, crumbs_count)
         }.to_json
       else
         raise ArgumentError, "Unknown breadcrumb output format"
@@ -61,88 +59,61 @@ module Crummy
 
     private
 
-    def crumb_to_html(crumb, index, total, options)
-      name, url, crumb_options = normalize_crumb(crumb, index, total, options)
+    def crumb_to_html(crumb, index, total)
+      name, url, options = normalize_crumb(crumb, index, total)
 
-      if url && crumb_options[:wrap_with].present?
-        content_tag(crumb_options[:wrap_with].to_sym, link_to(name, url), crumb_options[:html])
+      crumb_html = get_option(:crumb_html).merge(options.fetch(:crumb_html, {}))
+      crumb_html[:class] = Array(crumb_html.fetch(:class, []))
+      crumb_html[:class] << get_option(:default_crumb_class).presence
+      crumb_html[:class] << get_option(:first_crumb_class).presence if index == 0
+      crumb_html[:class] << get_option(:last_crumb_class).presence if index == total
+      crumb_html[:class].compact!
+      crumb_html[:class].uniq!
+      crumb_html.delete(:class) if crumb_html[:class].blank?
+
+      if url && get_option(:wrap_with).present?
+        content_tag(get_option(:wrap_with).to_sym, link_to(name, url), crumb_html)
       elsif url
-        link_to(name, url, crumb_options[:html])
-      elsif crumb_options[:wrap_with].present?
-        content_tag(crumb_options[:wrap_with].to_sym, content_tag(:span, name), crumb_options[:html])
+        link_to(name, url, crumb_html)
+      elsif get_option(:wrap_with).present?
+        content_tag(get_option(:wrap_with).to_sym, content_tag(:span, name), crumb_html)
       else
-        content_tag(:span, name, crumb_options[:html])
+        content_tag(:span, name, crumb_html)
       end
     end
 
-    def crumb_to_xml(crumb, index, total, options)
-      name, url, crumb_options = normalize_crumb(crumb, index, total, options)
+    def crumb_to_xml(crumb, index, total)
+      name, url, options = normalize_crumb(crumb, index, total)
 
-      crumb_options[:xml][:href] = url if url && options[:render_with_links]
+      crumb_xml = get_option(:crumb_xml).merge(options.fetch(:crumb_xml, {}))
+      crumb_xml[:href] = url if url
 
-      content_tag(:crumb, name, crumb_options[:xml])
+      content_tag(:crumb, name, crumb_xml)
     end
 
     def crumb_to_json(crumb, index, total, options)
-      name, url, crumb_options = normalize_crumb(crumb, index, total, options)
+      name, url, options = normalize_crumb(crumb, index, total)
 
-      { name: name, href: (url if options[:render_with_links]) }
+      { name: name, href: url }
     end
 
-    def normalize_crumb(crumb, index, total, options)
-      name, url, crumb_options = crumb
-      crumb_options = {} unless crumb_options.is_a?(Hash)
+    def normalize_crumb(crumb, index, total)
+      name, url, options = crumb
+      options = {} unless options.is_a?(Hash)
 
-      crumb_options = options[:crumb_options].merge(crumb_options)
+      options[:truncate] = options.fetch(:truncate, get_option(:truncate))
+      name = name.truncate(options[:truncate]) if options[:truncate]
 
-      total -= 1
+      options[:escape] = options.fetch(:escape, get_option(:escape))
+      name = options[:escape] ? h(name) : name.html_safe
 
-      name = name.truncate(crumb_options[:truncate]) if crumb_options[:truncate].present?
-      name = crumb_options[:escape] == false ? name.html_safe : h(name)
+      url = nil unless options.fetch(:link, get_option(:link)) && ( index != total || get_option(:link_last_crumb) )
 
-      url = options[:render_with_links] && ( index != total || options[:link_last_crumb] ) ? url : nil
-
-      html_classes = []
-      html_classes << options[:default_crumb_class] if options[:default_crumb_class].present?
-      html_classes << options[:first_crumb_class] if options[:first_crumb_class].present? && index == 0
-      html_classes << options[:last_crumb_class] if options[:last_crumb_class].present? && index == total
-
-      if html_classes.present? && crumb_options[:html][:class]
-        crumb_options[:html][:class] = [crumb_options[:html][:class], html_classes].flatten.join(' ')
-      elsif html_classes.present?
-        crumb_options[:html][:class] = html_classes.join(' ')
-      end
-
-      [name, url, crumb_options]
+      [name, url, options]
     end
 
-    def normailize_options(options)
-      normalized_options = {}
-
-      normalized_options[:skip_if_blank] = option_or_default(:skip_if_blank, options)
-      normalized_options[:format] = option_or_default(:format, options)
-      normalized_options[:right_to_left] = option_or_default(:right_to_left, options)
-      normalized_options[:separator] = option_or_default(options[:right_to_left] ? :right_to_left_separator : :separator, options)
-      normalized_options[:render_with_links] = option_or_default(:render_with_links, options)
-      normalized_options[:container_class] = option_or_default(:container_class, options)
-      normalized_options[:default_crumb_class] = option_or_default(:default_crumb_class, options)
-      normalized_options[:first_crumb_class] = option_or_default(:first_crumb_class, options)
-      normalized_options[:last_crumb_class] = option_or_default(:last_crumb_class, options)
-      normalized_options[:link_last_crumb] = option_or_default(:link_last_crumb, options)
-      normalized_options[:container] = option_or_default(:container, options)
-
-      normalized_options[:crumb_options] = {}
-      normalized_options[:crumb_options][:truncate] = option_or_default(:truncate, options)
-      normalized_options[:crumb_options][:escape] = option_or_default(:escape, options)
-      normalized_options[:crumb_options][:html] = option_or_default(:crumb_html, options)
-      normalized_options[:crumb_options][:xml] = option_or_default(:crumb_xml, options)
-      normalized_options[:crumb_options][:wrap_with] = option_or_default(:wrap_with, options)
-
-      normalized_options
-    end
-
-    def option_or_default(option, options)
-      options.has_key?(option.to_sym) ? options[option.to_sym] : Crummy.configuration.send(option.to_sym)
+    def get_option(option)
+      self.options.fetch(option, Crummy.configuration.send(option.to_sym)).clone
     end
   end
 end

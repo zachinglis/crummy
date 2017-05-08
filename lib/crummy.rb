@@ -11,7 +11,7 @@ module Crummy
   class Configuration
     attr_accessor :format
     attr_accessor :right_to_left
-    attr_accessor :render_with_links
+    attr_accessor :link
     attr_accessor :skip_if_blank
     attr_accessor :separator
     attr_accessor :right_to_left_separator
@@ -31,9 +31,8 @@ module Crummy
       @format = :html
       @right_to_left = false
       @separator = " &raquo; ".html_safe
-      @right_to_left_separator = " &laquo; ".html_safe
       @skip_if_blank = true
-      @render_with_links = true
+      @link = true
       @default_crumb_class = ''
       @container_class = ''
       @first_crumb_class = ''
