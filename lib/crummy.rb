@@ -14,7 +14,6 @@ module Crummy
     attr_accessor :link
     attr_accessor :skip_if_blank
     attr_accessor :separator
-    attr_accessor :right_to_left_separator
     attr_accessor :default_crumb_class
     attr_accessor :container_class
     attr_accessor :first_crumb_class

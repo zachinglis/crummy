@@ -112,25 +112,13 @@ skip_if_blank: true
 ### Examples
 
 ```ruby
-render_crumbs                     #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
-render_crumbs separator: ' | '    #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
-render_crumbs format: :xml        #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
-render_crumbs format: :html_list  #=> <ul class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ul>
-render_crumbs format: :html_list, :microdata => true
-                                  #=> <ul class="" id=""><li class="" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
-                                  #     <a href="/" itemprop="url"><span itemprop="title">Home</span></a></li></ul>
-add_crumb support_link, {:right_side => true, :links => "/support", :li_right_class => "pull-right hidden-phone"}
-                                  #=> <li class="pull-right hidden-phone">
-                                  #=>  <span><a class="glyphicons shield" href="/support">
-                                  #=>   <i></i>Support</a>
-                                  #=>  </span>
-                                  #=> </li>
-                                  #=> <li class="divider pull-right hidden-phone"></li>
+render_crumbs                                                #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
+render_crumbs separator: ' | '                               #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
+render_crumbs format: :xml                                   #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
+render_crumbs container: :ul, wrap_with: :li, separator: nil #=> <ul><li><a href="/">Home</a></li><li><a href="/">Businesses</a></li></ul>
 ```
 
 A crumb with a nil argument for the link will output an unlinked crumb.
-
-With `format: :html_list` you can specify the additional option `:container_class`
 
 ### App-wide configuration
 
@@ -155,21 +143,19 @@ Possible parameters for configuration are:
 
 ```ruby
 :format
-:render_with_links
+:link
 :skip_if_blank
-:html_separator
-:html_right_to_left_separator
-:xml_separator
-:xml_right_to_left_separator
+:separator
 :default_crumb_class
-:crumb_first_class
-:crumb_last_class
+:first_crumb_class
+:last_crumb_class
 :container_class
 :link_last_crumb
 :truncate
 :escape
 :right_to_left
 :crumb_html
+:crumb_xml
 ```
 
 See `lib/crummy.rb` for a list of these parameters and their defaults.
