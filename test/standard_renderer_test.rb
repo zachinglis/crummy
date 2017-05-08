@@ -15,19 +15,19 @@ class StandardRendererTest < Minitest::Test
 
   def test_classes
     renderer = StandardRenderer.new
-    assert_dom_equal('<a href="url" class="default first last">name</a>',
+    assert_dom_equal('<a href="url" class="default first last"><span>name</span></a>',
                  renderer.render_crumbs([['name', 'url']], default_crumb_class: 'default', first_crumb_class: 'first', last_crumb_class: 'last', format: :html))
 
-    assert_dom_equal('<ul><li class="default first last"><a href="url">name</a></li></ul>',
+    assert_dom_equal('<ul><li class="default first last"><a href="url"><span>name</span></a></li></ul>',
                  renderer.render_crumbs([['name', 'url']], default_crumb_class: 'default', first_crumb_class: 'first', last_crumb_class: 'last', container: :ul, wrap_with: :li, separator: nil, format: :html))
 
     assert_dom_equal('<crumbs><crumb href="url">name</crumb></crumbs>',
                  renderer.render_crumbs([['name', 'url']], default_crumb_class: 'default', first_crumb_class: 'first', last_crumb_class: 'last', format: :xml))
 
-    assert_dom_equal('<a href="url1" class="default first">name1</a> &raquo; <a href="url2" class="default">name2</a> &raquo; <a href="url3" class="default last">name3</a>',
+    assert_dom_equal('<a href="url1" class="default first"><span>name1</span></a> &raquo; <a href="url2" class="default"><span>name2</span></a> &raquo; <a href="url3" class="default last"><span>name3</span></a>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2'], ['name3', 'url3']], default_crumb_class: 'default', first_crumb_class: 'first', last_crumb_class: 'last', format: :html))
 
-    assert_dom_equal('<ul class="container"><li class="default first"><a href="url1">name1</a></li><li class="default"><a href="url2">name2</a></li><li class="default last"><a href="url3">name3</a></li></ul>',
+    assert_dom_equal('<ul class="container"><li class="default first"><a href="url1"><span>name1</span></a></li><li class="default"><a href="url2"><span>name2</span></a></li><li class="default last"><a href="url3"><span>name3</span></a></li></ul>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2'], ['name3', 'url3']], default_crumb_class: 'default', first_crumb_class: 'first', last_crumb_class: 'last', container_class: 'container', container: :ul, wrap_with: :li, separator: nil, format: :html))
 
     assert_dom_equal('<crumbs><crumb href="url1">name1</crumb><crumb href="url2">name2</crumb></crumbs>',
@@ -45,10 +45,10 @@ class StandardRendererTest < Minitest::Test
     assert_dom_equal('<crumbs><crumb>name</crumb></crumbs>',
                  renderer.render_crumbs([['name', 'url']], format: :xml, link_last_crumb: false))
 
-    assert_dom_equal('<a href="url1">name1</a> &raquo; <span>name2</span>',
+    assert_dom_equal('<a href="url1"><span>name1</span></a> &raquo; <span>name2</span>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], format: :html, link_last_crumb: false))
 
-    assert_dom_equal('<ul><li><a href="url1">name1</a></li><li><a href="url2">name2</a></li><li><span>name3</span></li></ul>',
+    assert_dom_equal('<ul><li><a href="url1"><span>name1</span></a></li><li><a href="url2"><span>name2</span></a></li><li><span>name3</span></li></ul>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2'], ['name3', 'url3']], container: :ul, wrap_with: :li, separator: nil, format: :html, link_last_crumb: false))
 
     assert_dom_equal('<crumbs><crumb href="url1">name1</crumb><crumb>name2</crumb></crumbs>',
@@ -75,17 +75,40 @@ class StandardRendererTest < Minitest::Test
   def test_html_options
     renderer = StandardRenderer.new
 
-    assert_dom_equal('<a href="url" title="title">name</a>',
+    assert_dom_equal('<a href="url" title="title"><span>name</span></a>',
                  renderer.render_crumbs([['name', 'url', crumb_html: { title: 'title' }]], format: :html))
 
     assert_dom_equal('<span title="title">name</span>',
                  renderer.render_crumbs([['name', 'url', crumb_html: { title: 'title' }]], format: :html, link_last_crumb: false))
 
-    assert_dom_equal('<ul><li title="title"><a href="url">name</a></li></ul>',
+    assert_dom_equal('<ul><li title="title"><a href="url"><span>name</span></a></li></ul>',
                  renderer.render_crumbs([['name', 'url', crumb_html: { title: 'title' }]], container: :ul, wrap_with: :li, separator: nil, format: :html))
 
     assert_dom_equal('<ul><li title="title"><span>name</span></li></ul>',
                  renderer.render_crumbs([['name', 'url', crumb_html: { title: 'title' }]], container: :ul, wrap_with: :li, format: :html, link_last_crumb: false))
+  end
+
+  def test_link_html_options_with_microdata
+    renderer = StandardRenderer.new
+    Crummy.configure do |config|
+      config.microdata = true
+    end
+
+    assert_dom_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/breadcrumb" title="title" class="first last"><a href="url" itemprop="url"><span itemprop="title">name</span></a></div>',
+                 renderer.render_crumbs([['name', 'url', crumb_html: { title: 'title' }]], first_crumb_class: 'first', last_crumb_class: 'last', format: :html))
+
+    assert_dom_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/breadcrumb" title="title" class="first last"><span itemprop="title">name</span></div>',
+                 renderer.render_crumbs([['name', 'url', crumb_html: { title: 'title' }]], first_crumb_class: 'first', last_crumb_class: 'last', format: :html, link_last_crumb: false))
+
+    assert_dom_equal('<ul><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/breadcrumb" title="title"><a itemprop="url" href="url"><span itemprop="title">name</span></a></li></ul>',
+                 renderer.render_crumbs([['name', 'url', crumb_html: { title: 'title' }]], first_crumb_class: 'first', last_crumb_class: 'last', format: :html, container: :ul, wrap_with: :li, separator: nil))
+
+    assert_dom_equal('<ul><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/breadcrumb" title="title"><span itemprop="title">name</span></li></ul>',
+                 renderer.render_crumbs([['name', 'url', crumb_html: { title: 'title' }]], first_crumb_class: 'first', last_crumb_class: 'last', format: :html, container: :ul, wrap_with: :li, separator: nil, link_last_crumb: false))
+
+    Crummy.configure do |config|
+      config.microdata = false
+    end
   end
 
   def test_inline_configuration

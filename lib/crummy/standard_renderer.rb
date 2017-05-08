@@ -71,14 +71,27 @@ module Crummy
       crumb_html[:class].uniq!
       crumb_html.delete(:class) if crumb_html[:class].blank?
 
-      if url && get_option(:wrap_with).present?
-        content_tag(get_option(:wrap_with).to_sym, link_to(name, url), crumb_html)
-      elsif url
-        link_to(name, url, crumb_html)
+      if get_option(:microdata)
+        crumb_html = crumb_html.merge(itemscope: true, itemtype: data_definition_url('breadcrumb'))
+        wrap_with = get_option(:wrap_with).presence || :div
+
+        if url
+          content_tag(wrap_with.to_sym, link_to(content_tag(:span, name, itemprop: 'title'), url, itemprop: 'url'), crumb_html)
+        else
+          content_tag(wrap_with.to_sym, content_tag(:span, name, itemprop: 'title'), crumb_html)
+        end
       elsif get_option(:wrap_with).present?
-        content_tag(get_option(:wrap_with).to_sym, content_tag(:span, name), crumb_html)
+        if url
+          content_tag(get_option(:wrap_with).to_sym, link_to(content_tag(:span, name), url), crumb_html)
+        else
+          content_tag(get_option(:wrap_with).to_sym, content_tag(:span, name), crumb_html)
+        end
       else
-        content_tag(:span, name, crumb_html)
+        if url
+          link_to(content_tag(:span, name), url, crumb_html)
+        else
+          content_tag(:span, name, crumb_html)
+        end
       end
     end
 
@@ -114,6 +127,10 @@ module Crummy
 
     def get_option(option)
       self.options.fetch(option, Crummy.configuration.send(option.to_sym)).clone
+    end
+
+    def data_definition_url(type)
+      "http://data-vocabulary.org/#{type}"
     end
   end
 end

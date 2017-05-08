@@ -25,6 +25,7 @@ module Crummy
     attr_accessor :crumb_xml
     attr_accessor :container
     attr_accessor :wrap_with
+    attr_accessor :microdata
 
     def initialize
       @format = :html
@@ -43,6 +44,7 @@ module Crummy
       @crumb_xml = {}
       @container = nil
       @wrap_with = nil
+      @microdata = false
     end
   end
 

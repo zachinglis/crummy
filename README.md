@@ -156,6 +156,7 @@ Possible parameters for configuration are:
 :right_to_left
 :crumb_html
 :crumb_xml
+:microdata
 ```
 
 See `lib/crummy.rb` for a list of these parameters and their defaults.
