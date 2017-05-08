@@ -77,7 +77,7 @@ class StandardRendererTest < Test::Unit::TestCase
                  renderer.render_crumbs([['name', 'url', :html => { :title => 'title' }]], :container => :ul, :wrap_with => :li, :format => :html))
 
     assert_equal('<ul><li title="title"><span>name</span></li></ul>',
-                 renderer.render_crumbs([['name', 'url', :html_options => {:title => 'link title'}}]], :container => :ul, :wrap_with => :li, :format => :html, :link_last_crumb => false))
+                 renderer.render_crumbs([['name', 'url', :html_options => {:title => 'link title'}]], :container => :ul, :wrap_with => :li, :format => :html, :link_last_crumb => false))
   end
 
   def test_inline_configuration
