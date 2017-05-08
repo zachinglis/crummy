@@ -5,108 +5,53 @@ module Crummy
     include ActionView::Helpers::UrlHelper
     include ActionView::Helpers::TagHelper unless self.included_modules.include?(ActionView::Helpers::TagHelper)
     ActionView::Helpers::TagHelper::BOOLEAN_ATTRIBUTES.merge([:itemscope].to_set)
+    include ERB::Util
+
+    attr_accessor :options
 
     # Render the list of crumbs as either html or xml
     #
     # Takes 3 options:
-    # The output format. Can either be xml or html. Default :html
-    #   :format => (:html|:xml)
+    # The output format. Can either be HTML, XML or JSON. Default :html
+    #   :format => (:html|:xml|:json)
     # The separator text. It does not assume you want spaces on either side so you must specify. Default +&raquo;+ for :html and +crumb+ for xml
     #   :separator => string
     # Render links in the output. Default +true+
     #   :link => boolean
     #
     #   Examples:
-    #   render_crumbs                         #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
-    #   render_crumbs :separator => ' | '     #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
-    #   render_crumbs :format => :xml         #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
-    #   render_crumbs :format => :html_list   #=> <ol class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ol>
-    #
-    # With :format => :html_list you can specify additional params: li_class, ol_class, ol_id
-    # The only argument is for the separator text. It does not assume you want spaces on either side so you must specify. Defaults to +&raquo;+
-    #
-    #   render_crumbs(" . ")  #=> <a href="/">Home</a> . <a href="/businesses">Businesses</a>
+    #   render_crumbs                                                #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
+    #   render_crumbs separator: ' | '                               #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
+    #   render_crumbs format: :xml                                   #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
+    #   render_crumbs container: :ul, wrap_with: :li, separator: nil #=> <ul><li><a href="/">Home</a></li><li><a href="/">Businesses</a></li></ul>
     #
     def render_crumbs(crumbs, options = {})
+      self.options = options
 
-      options[:skip_if_blank] ||= Crummy.configuration.skip_if_blank
-      return '' if options[:skip_if_blank] && crumbs.count < 1
-      options[:format] ||= Crummy.configuration.format
-      options[:separator] ||= Crummy.configuration.send(:"#{options[:format]}_separator")
-      options[:right_separator] ||= Crummy.configuration.send(:"#{options[:format]}_right_separator")
-      options[:links] ||= Crummy.configuration.links
-      options[:first_class] ||= Crummy.configuration.first_class
-      options[:last_class] ||= Crummy.configuration.last_class
-      options[:microdata] ||= Crummy.configuration.microdata if options[:microdata].nil?
-      options[:truncate] ||= Crummy.configuration.truncate if options[:truncate]
-      options[:last_crumb_linked] = Crummy.configuration.last_crumb_linked if options[:last_crumb_linked].nil?
-      options[:right_side] ||= Crummy.configuration.right_side
+      return '' if get_option(:skip_if_blank) && crumbs.count < 1
 
-      last_hash = lambda {|o|k=o.map{|c|
-                                      c.is_a?(Hash) ? (c.empty? ? nil: c) : nil}.compact
-                                      k.empty? ? {} : k.last
-                                    }
-      local_global = lambda {|crumb, global_options, param_name| last_hash.call(crumb).has_key?(param_name.to_sym) ? last_hash.call(crumb)[param_name.to_sym] : global_options[param_name.to_sym]}
+      crumbs = crumbs.reverse if get_option(:right_to_left)
 
-      case options[:format]
+      crumbs_count = crumbs.count - 1
+
+      case get_option(:format)
       when :html
-        crumb_string = crumbs.map{|crumb|local_global.call(crumb, options, :right_side) ? nil :
-                        crumb_to_html(crumb,
-                                      local_global.call(crumb, options, :links),
-                                      local_global.call(crumb, options, :first_class),
-                                      local_global.call(crumb, options, :last_class),
-                                      (crumb == crumbs.first),
-                                      (crumb == crumbs.last),
-                                      local_global.call(crumb, options, :microdata),
-                                      local_global.call(crumb, options, :last_crumb_linked),
-                                      local_global.call(crumb, options, :truncate))}.compact.join(options[:separator]).html_safe
-        crumb_string
-      when :html_list
-        # Let's set values for special options of html_list format
-        options[:li_class] ||= Crummy.configuration.li_class
-        options[:ol_class] ||= Crummy.configuration.ol_class
-        options[:ol_id] ||= Crummy.configuration.ol_id
-        options[:ol_id] = nil if options[:ol_id].blank?
-
-        crumb_string = crumbs.map{|crumb|local_global.call(crumb, options, :right_side) ? nil :
-                        crumb_to_html_list(crumb,
-                                           local_global.call(crumb, options, :links),
-                                           local_global.call(crumb, options, :li_class),
-                                           local_global.call(crumb, options, :first_class),
-                                           local_global.call(crumb, options, :last_class),
-                                           (crumb == crumbs.first),
-                                           (crumb == crumbs.find_all{|crumb|
-                                                    !last_hash.call(crumb).fetch(:right_side,false)}.compact.last),
-                                           local_global.call(crumb, options, :microdata),
-                                           local_global.call(crumb, options, :last_crumb_linked),
-                                           local_global.call(crumb, options, :truncate),
-                                           local_global.call(crumb, options, :separator))}.compact.join.html_safe
-        crumb_right_string = crumbs.reverse.map{|crumb|!local_global.call(crumb, options, :right_side) ? nil :
-
-                        crumb_to_html_list(crumb,
-                                           local_global.call(crumb, options, :links),
-                                           local_global.call(crumb, options, :li_right_class),
-                                           local_global.call(crumb, options, :first_class),
-                                           local_global.call(crumb, options, :last_class),
-                                           (crumb == crumbs.first),
-                                           (crumb == crumbs.find_all{|crumb|!local_global.call(crumb, options, :right_side)}.compact.last),
-                                           local_global.call(crumb, options, :microdata),
-                                           local_global.call(crumb, options, :last_crumb_linked),
-                                           local_global.call(crumb, options, :truncate),
-                                           local_global.call(crumb, options, :right_separator))}.compact.join.html_safe
-        crumb_string = content_tag(:ol,
-                                   crumb_string+crumb_right_string,
-                                   :class => options[:ol_class],
-                                   :id => options[:ol_id])
-        crumb_string
+        html = crumbs.map.with_index { |crumb, index|
+          crumb_to_html(crumb, index, crumbs_count)
+        }.compact.join(get_option(:separator)).html_safe
+        if get_option(:container).present?
+          html = content_tag(get_option(:container).to_sym, html, class: get_option(:container_class).presence)
+        end
+        html
       when :xml
-        crumbs.collect do |crumb|
-          crumb_to_xml(crumb,
-                      local_global.call(crumb, options, :links),
-                      local_global.call(crumb, options, :separator),
-                      (crumb == crumbs.first),
-                      (crumb == crumbs.last))
-        end * ''
+        xml = crumbs.map.with_index { |crumb, index|
+          crumb_to_xml(crumb, index, crumbs_count)
+        }.compact.join.html_safe
+        content_tag(:crumbs, xml)
+      when :json
+        crumbs.map.with_index { |crumb, index|
+          crumb_to_json(crumb, index, crumbs_count)
+        }.to_json
       else
         raise ArgumentError, "Unknown breadcrumb output format"
       end
@@ -114,53 +59,74 @@ module Crummy
 
     private
 
-    def crumb_to_html(crumb, links, first_class, last_class, is_first, is_last, with_microdata, last_crumb_linked, truncate)
-      html_classes = []
-      html_classes << first_class if is_first
-      html_classes << last_class if is_last
-      name, url, options = crumb
-      options = {} unless options.is_a?(Hash)
-      can_link = url && links && (!is_last || last_crumb_linked)
-      link_html_options = options[:link_html_options] || {}
-      link_html_options[:class] = html_classes
-      if with_microdata
-        item_title = content_tag(:span, (truncate.present? ? name.truncate(truncate) : name), :itemprop => "title")
-        html_options = {:itemscope => true, :itemtype => data_definition_url("Breadcrumb")}
-        link_html_options[:itemprop] = "url"
-        html_content = can_link ? link_to(item_title, url, link_html_options) : item_title
-        content_tag(:div, html_content, html_options)
+    def crumb_to_html(crumb, index, total)
+      name, url, options = normalize_crumb(crumb, index, total)
+
+      crumb_html = get_option(:crumb_html).merge(options.fetch(:crumb_html, {}))
+      crumb_html[:class] = Array(crumb_html.fetch(:class, []))
+      crumb_html[:class] << get_option(:default_crumb_class).presence
+      crumb_html[:class] << get_option(:first_crumb_class).presence if index == 0
+      crumb_html[:class] << get_option(:last_crumb_class).presence if index == total
+      crumb_html[:class].compact!
+      crumb_html[:class].uniq!
+      crumb_html.delete(:class) if crumb_html[:class].blank?
+
+      if get_option(:microdata)
+        crumb_html = crumb_html.merge(itemscope: true, itemtype: data_definition_url('breadcrumb'))
+        wrap_with = get_option(:wrap_with).presence || :div
+
+        if url
+          content_tag(wrap_with.to_sym, link_to(content_tag(:span, name, itemprop: 'title'), url, itemprop: 'url'), crumb_html)
+        else
+          content_tag(wrap_with.to_sym, content_tag(:span, name, itemprop: 'title'), crumb_html)
+        end
+      elsif get_option(:wrap_with).present?
+        if url
+          content_tag(get_option(:wrap_with).to_sym, link_to(content_tag(:span, name), url), crumb_html)
+        else
+          content_tag(get_option(:wrap_with).to_sym, content_tag(:span, name), crumb_html)
+        end
       else
-        can_link ? link_to((truncate.present? ? name.truncate(truncate) : name), url, link_html_options) : (truncate.present? ? name.truncate(truncate) : name)
+        if url
+          link_to(content_tag(:span, name), url, crumb_html)
+        else
+          content_tag(:span, name, crumb_html)
+        end
       end
     end
 
-    def crumb_to_html_list(crumb, links, li_class, first_class, last_class, is_first, is_last, with_microdata, last_crumb_linked, truncate, separator='')
-      name, url, options = crumb
-      options = {} unless options.is_a?(Hash)
-      can_link = url && links && (!is_last || last_crumb_linked) && !(/<\/a/ =~ name)
-      html_classes = []
-      html_classes << first_class if is_first && !first_class.empty?
-      html_classes << last_class if is_last && !last_class.empty?
-      html_classes << li_class unless li_class.empty?
-      html_options = html_classes.size > 0 ? {:class => html_classes.join(' ').strip} : {}
+    def crumb_to_xml(crumb, index, total)
+      name, url, options = normalize_crumb(crumb, index, total)
 
-      if with_microdata
-        html_options[:itemscope] = true
-        html_options[:itemtype]  = data_definition_url("Breadcrumb")
-        item_title = content_tag(:span, (truncate.present? ? name.truncate(truncate) : name), :itemprop => "title")
-        link_html_options = options[:link_html_options] || {}
-        link_html_options[:itemprop] = "url"
-        html_content = can_link ? link_to(item_title, url, link_html_options) : item_title
-      else
-        html_content = can_link ? link_to((truncate.present? ? name.truncate(truncate) : name), url, options[:link_html_options]) : content_tag(:span, (truncate.present? ? name.truncate(truncate) : name))
-      end
-      content_tag(:li, html_content, html_options)+(/<\/li/ =~ separator ?
-                                        separator : content_tag(:li, separator) unless separator.blank? || is_last)
+      crumb_xml = get_option(:crumb_xml).merge(options.fetch(:crumb_xml, {}))
+      crumb_xml[:href] = url if url
+
+      content_tag(:crumb, name, crumb_xml)
     end
 
-    def crumb_to_xml(crumb, links, separator, is_first, is_last)
-      name, url = crumb
-      content_tag(separator, name, :href => (url && links ? url : nil))
+    def crumb_to_json(crumb, index, total, options)
+      name, url, options = normalize_crumb(crumb, index, total)
+
+      { name: name, href: url }
+    end
+
+    def normalize_crumb(crumb, index, total)
+      name, url, options = crumb
+      options = {} unless options.is_a?(Hash)
+
+      options[:truncate] = options.fetch(:truncate, get_option(:truncate))
+      name = name.truncate(options[:truncate]) if options[:truncate]
+
+      options[:escape] = options.fetch(:escape, get_option(:escape))
+      name = options[:escape] ? h(name) : name.html_safe
+
+      url = nil unless options.fetch(:link, get_option(:link)) && ( index != total || get_option(:link_last_crumb) )
+
+      [name, url, options]
+    end
+
+    def get_option(option)
+      self.options.fetch(option, Crummy.configuration.send(option.to_sym)).clone
     end
 
     def data_definition_url(type)

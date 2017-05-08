@@ -11,7 +11,7 @@ Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 Simply add the dependency to your Gemfile:
 
 ```ruby
-gem "crummy", "~> 1.8.0"
+gem "crummy", github: 'blaknite/crummy', branch: 'master'
 ```
 
 # Example
@@ -51,29 +51,36 @@ Then in your view:
 
 ## Html options for breadcrumb link
 
-You can set the html options with *link_html_options*.
-These are added to the *a* tag.
+You can set the html options with `:crumb_html`.
+These are added to the `<a>` or `<li>` tag.
 
 ```ruby
-add_crumb "Home", '/', link_html_options: {title: "my link title"}
+add_crumb "Home", '/', crumb_html: { title: "my link title" }
 ```
 
 ##You can set html instead text in first parameter.
-If tag <code>a</code> present in this html, tag a not be a wrapper.
+You must tell specify that the string is not to be escaped. For example if you want to use icons in your crumbs:
 
 ```ruby
-add_crumb "<a class='glyphicons shield' href='/support'><i></i>Support</a>".html_safe, "", {}
+add_crumb "<span class="fa fa-life-ring"></span> Support", "/", escape: false
 ```
 
 ## Options for render\_crumbs
 
 `render_crumbs` renders the list of crumbs as either html or xml
 
-The output format. Can either be :xml or :html or :html\_list. Defaults
+The output format. Can either be :xml or :html. Defaults
 to :html
 
 ```ruby
-format: (:html|:html_list|:xml)
+format: (:html|:xml)
+```
+
+Unordered lists and other such structures can be created by specifying :container and :wrap_with.
+The following would output an unordered list:
+
+```ruby
+render_crumbs container: :ul, wrap_with: :li, separator: ''
 ```
 
 The separator text. It does not assume you want spaces on either side so
@@ -87,21 +94,13 @@ separator: string
 Render links in the output. Defaults to *true*
 
 ```ruby
-links: false
-```
-
-Render
-[Richsnipet](http:/support.google.com/webmasters/bin/answer.py?hl=en&answer=99170&topic=1088472&ctx=topic/)
-Default to *false*
-
-```ruby
-microdata: true
+render_with_links: false
 ```
 
 Optionally disable linking of the last crumb, Defaults to *true*
 
 ```ruby
-last_crumb_linked: false
+link_last_crumb: false
 ```
 
 With this option, output will be blank if there are no breadcrumbs.
@@ -113,25 +112,13 @@ skip_if_blank: true
 ### Examples
 
 ```ruby
-render_crumbs                     #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
-render_crumbs separator: ' | '    #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
-render_crumbs format: :xml        #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
-render_crumbs format: :html_list  #=> <ol class="" id=""><li class=""><a href="/">Home</a></li><li class=""><a href="/">Businesses</a></li></ol>
-render_crumbs format: :html_list, :microdata => true
-                                  #=> <ol class="" id=""><li class="" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
-                                  #     <a href="/" itemprop="url"><span itemprop="title">Home</span></a></li></ol>
-add_crumb support_link, {:right_side => true, :links => "/support", :li_right_class => "pull-right hidden-phone"}
-                                  #=> <li class="pull-right hidden-phone">
-                                  #=>  <span><a class="glyphicons shield" href="/support">
-                                  #=>   <i></i>Support</a>
-                                  #=>  </span>
-                                  #=> </li>
-                                  #=> <li class="divider pull-right hidden-phone"></li>
+render_crumbs                                                #=> <a href="/">Home</a> &raquo; <a href="/businesses">Businesses</a>
+render_crumbs separator: ' | '                               #=> <a href="/">Home</a> | <a href="/businesses">Businesses</a>
+render_crumbs format: :xml                                   #=> <crumb href="/">Home</crumb><crumb href="/businesses">Businesses</crumb>
+render_crumbs container: :ul, wrap_with: :li, separator: nil #=> <ul><li><a href="/">Home</a></li><li><a href="/">Businesses</a></li></ul>
 ```
 
 A crumb with a nil argument for the link will output an unlinked crumb.
-
-With `format: :html_list` you can specify additional `params: :li_class, :ol_class, :ol_id`
 
 ### App-wide configuration
 
@@ -156,36 +143,29 @@ Possible parameters for configuration are:
 
 ```ruby
 :format
-:links
+:link
 :skip_if_blank
-:html_separator
-:xml_separator
-:html_list_separator
-:html_list_right_separator
-:first_class
-:last_class
-:ol_id
-:ol_class
-:li_class
-:li_right_class
-:microdata
-:last_crumb_linked
+:separator
+:default_crumb_class
+:first_crumb_class
+:last_crumb_class
+:container_class
+:link_last_crumb
 :truncate
-:right_side
+:escape
+:right_to_left
+:crumb_html
+:crumb_xml
+:microdata
 ```
 
 See `lib/crummy.rb` for a list of these parameters and their defaults.
 
 ###Individually for each crumb configuration:
 ```ruby
-add_crumb support_link, {:right_side => true, :links => "/support", : li_class => "my_class", :li_right_class => "pull-right hidden-phone"}
+add_crumb 'Support', support_path, crumb_html: { class: 'important', title: 'File a support request.' }, truncate: 20
 ```
-Simple add that parameter to options hash. 
-
-
-## Live example application
-
-An example application is available right inside this gem. That application is documented, see `example/README` for details about usage.
+Simple add that parameter to options hash.
 
 ## Todo
 
@@ -216,5 +196,6 @@ An example application is available right inside this gem. That application is d
 -   [Jan Szumiec](http://github.com/jasiek)
 -   [Jeff Browning](http://github.com/jbrowning)
 -   [Bill Turner](http://github.com/billturner)
+-   [Grant Colegate](http://github.com/blaknite)
 
 **Copyright 2008-2013 Zach Inglis, released under the MIT license**
