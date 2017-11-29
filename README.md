@@ -27,7 +27,7 @@ end
 class BusinessController < ApplicationController
   add_crumb("Businesses") { |instance| instance.send :businesses_path }
   add_crumb("Comments", only: "comments") { |instance| instance.send :businesses_comments_path }
-  before_filter :load_comment, only: "show"
+  before_action :load_comment, only: "show"
   add_crumb :comment, only: "show"
 
   # Example for nested routes:
@@ -180,7 +180,7 @@ See `lib/crummy.rb` for a list of these parameters and their defaults.
 ```ruby
 add_crumb support_link, {:right_side => true, :links => "/support", : li_class => "my_class", :li_right_class => "pull-right hidden-phone"}
 ```
-Simple add that parameter to options hash. 
+Simple add that parameter to options hash.
 
 
 ## Live example application
