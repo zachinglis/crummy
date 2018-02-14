@@ -33,8 +33,8 @@ class StandardRendererTest < Test::Unit::TestCase
 
     assert_dom_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" class="first last" itemprop="url"><span itemprop="title">name</span></a></div>',
                  renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :microdata => true))
-    assert_equal('<ol class=""><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a itemprop="url" href="url"><span itemprop="title">name</span></a></li></ol>',
-                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html_list, :microdata => true))
+    assert_dom_equal '<ol class=""><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a itemprop="url" href="url"><span itemprop="title">name</span></a></li></ol>',
+                     renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html_list, :microdata => true)
     assert_equal('<ol class="crumbclass" id="crumbid"><li class="liclass"><a href="url">name</a></li></ol>',
                  renderer.render_crumbs([['name', 'url']], :format => :html_list, :ol_id => "crumbid", :ol_class => "crumbclass", :li_class => "liclass"))
   end
