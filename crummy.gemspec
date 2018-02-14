@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.homepage = "http://github.com/zachinglis/crummy"
   s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.8}
+  s.rubygems_version = %q{1.9.0}
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bundler',     '~> 1.0'

@@ -1,3 +1,7 @@
+1.9.0
+* [ADDED] Adds support for Rails 5.1 and above.
+* [ADDED] Adds ruby 2.5.0 to .travis.yml
+
 1.8.0
 * [ADDED] You can now set each parameters individually for each crumb
 * [ADDED] You can now set each crumb on right or left side
