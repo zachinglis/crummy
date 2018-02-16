@@ -13,7 +13,7 @@ appraise 'rails5_0' do
   gem 'actionpack',    '~> 5.0'
 end
 
-appraise "rails5_1" do
-  gem 'activesupport', '~> 5.1'
-  gem 'actionpack',    '~> 5.1'
+appraise 'rails5_1' do
+  gem 'activesupport', '~> 5.1.0'
+  gem 'actionpack',    '~> 5.1.0'
 end
