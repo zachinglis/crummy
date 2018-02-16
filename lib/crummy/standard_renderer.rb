@@ -164,7 +164,7 @@ module Crummy
       else
         html_content = can_link ? link_to((truncate.present? ? name.truncate(truncate) : name), url, options[:link_html_options]) : content_tag(:span, (truncate.present? ? name.truncate(truncate) : name))
       end
-      content_tag(:li, html_content, html_options) + (%r{</li}.match?(separator) ?
+      content_tag(:li, html_content, html_options) + (%r{</li} =~ separator ?
                                         separator : content_tag(:li, separator) unless separator.blank? || is_last)
     end
 
