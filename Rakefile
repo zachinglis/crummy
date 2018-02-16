@@ -3,7 +3,7 @@ require 'bundler/gem_tasks'
 require 'appraisal'
 
 desc 'Default: run unit tests.'
-task :default => :test
+task default: :test
 
 require 'rake/testtask'
 desc 'Test the crummy plugin.'
