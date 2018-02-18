@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.homepage = 'http://github.com/zachinglis/crummy'
   s.require_paths = ['lib']
-  s.rubygems_version = '1.9.0'
+  s.rubygems_version = '2.0.0'
 
   s.add_development_dependency 'actionpack'
   s.add_development_dependency 'activesupport'

@@ -11,7 +11,7 @@ Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 Simply add the dependency to your Gemfile:
 
 ```ruby
-gem "crummy", "~> 1.9.0"
+gem "crummy", "~> 2.0.0" # "~> 1.8.0" for ruby < 2.0
 ```
 
 # Example

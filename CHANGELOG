@@ -1,4 +1,4 @@
-1.9.0
+2.0.0
 * [ADDED] Adds support for Rails 5.1 and above.
 * [ADDED] Adds ruby 2.5.0 to .travis.yml
 * [BREAKING] Removes support for ruby 1.9.3
