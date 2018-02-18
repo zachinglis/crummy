@@ -24,9 +24,7 @@ module Crummy
                 nam.is_a?(Symbol) ? instance.instance_variable_get("@#{nam}") : nam
               end
             end
-            unless url.is_a? String
-              url = instance.send :url_for, url
-            end
+            url = instance.send :url_for, url unless url.is_a? String
           end
 
           # Get the return value of the name if its a proc.
