@@ -192,7 +192,7 @@ An example application is available right inside this gem. That application is d
 -   Accept collections of models as a single argument
 -   Accept instances of models as a single argument
 -   Allow for variables in names. (The workaround is to do your own
-    before\_filter for that currently)
+    before_filter for that currently)
 -   Make a crumbs? type method
 
 ## Credits
