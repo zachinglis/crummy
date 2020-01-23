@@ -31,9 +31,7 @@ class StandardRendererTest < Test::Unit::TestCase
     assert_equal('<crumb href="url1">name1</crumb><crumb href="url2">name2</crumb>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :first_class => 'first', :last_class => 'last', :format => :xml))
 
-    assert_dom_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" class="first last" itemprop="url"><span itemprop="title">name</span></a></div>',
-                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :microdata => true))
-    assert_equal('<ol class=""><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a itemprop="url" href="url"><span itemprop="title">name</span></a></li></ol>',
+    assert_equal('<ol class="" itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList"><li class="first last" itemscope="itemscope" itemtype="http://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="url"><span itemprop="name">name</span></a><meta itemprop="position" content="1" /></li></ol>',
                  renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html_list, :microdata => true))
     assert_equal('<ol class="crumbclass" id="crumbid"><li class="liclass"><a href="url">name</a></li></ol>',
                  renderer.render_crumbs([['name', 'url']], :format => :html_list, :ol_id => "crumbid", :ol_class => "crumbclass", :li_class => "liclass"))
@@ -57,9 +55,7 @@ class StandardRendererTest < Test::Unit::TestCase
     assert_equal('<crumb href="url1">name1</crumb><crumb href="url2">name2</crumb>',
                  renderer.render_crumbs([['name1', 'url1'], ['name2', 'url2']], :first_class => 'first', :last_class => 'last', :format => :xml, :last_crumb_linked => false))
 
-    assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></div>',
-                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :microdata => true, :last_crumb_linked => false))
-    assert_equal('<ol class=""><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></li></ol>',
+    assert_equal('<ol class="" itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList"><li class="first last" itemscope="itemscope" itemtype="http://schema.org/ListItem" itemprop="itemListElement"><span itemprop="name">name</span><meta itemprop="position" content="1" /></li></ol>',
                  renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html_list, :microdata => true, :last_crumb_linked => false))
     assert_equal('<ol class="crumbclass" id="crumbid"><li class="liclass"><span>name</span></li></ol>',
                  renderer.render_crumbs([['name', 'url']], :format => :html_list, :ol_id => "crumbid", :ol_class => "crumbclass", :li_class => "liclass", :last_crumb_linked => false))
@@ -110,16 +106,10 @@ class StandardRendererTest < Test::Unit::TestCase
       config.microdata = true
     end
 
-    assert_dom_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" class="first last" itemprop="url" title="link title"><span itemprop="title">name</span></a></div>',
-                 renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html))
-
-    assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></div>',
-                 renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))
-
-    assert_equal('<ol class=""><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a title="link title" itemprop="url" href="url"><span itemprop="title">name</span></a></li></ol>',
+    assert_equal('<ol class="" itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList"><li class="first last" itemscope="itemscope" itemtype="http://schema.org/ListItem" itemprop="itemListElement"><a title="link title" itemprop="item" href="url"><span itemprop="name">name</span></a><meta itemprop="position" content="1" /></li></ol>',
                  renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html_list))
 
-    assert_equal('<ol class=""><li class="first last" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></li></ol>',
+    assert_equal('<ol class="" itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList"><li class="first last" itemscope="itemscope" itemtype="http://schema.org/ListItem" itemprop="itemListElement"><span itemprop="name">name</span><meta itemprop="position" content="1" /></li></ol>',
                  renderer.render_crumbs([['name', 'url', {:link_html_options => {:title => 'link title'}}]], :first_class => 'first', :last_class => 'last', :format => :html_list, :last_crumb_linked => false))
   end
 
@@ -138,7 +128,7 @@ class StandardRendererTest < Test::Unit::TestCase
       config.last_crumb_linked = true
     end
 
-    assert_match(/itemscope/, renderer.render_crumbs([['name', 'url']], :microdata => true))
+    assert_match(/itemscope/, renderer.render_crumbs([['name', 'url']], :microdata => true, :format => :html_list))
     assert_no_match(/href/, renderer.render_crumbs([['name', 'url']], :last_crumb_linked => false))
   end
 
@@ -172,11 +162,11 @@ class StandardRendererTest < Test::Unit::TestCase
       config.microdata = true
     end
     # using configured microdata setting
-    assert_dom_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="url" class="first last" itemprop="url"><span itemprop="title">name</span></a></div>',
-                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html))
+    assert_dom_equal('<ol class="" itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList"><li class="first last" itemscope="itemscope" itemtype="http://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="url"><span itemprop="name">name</span></a><meta itemprop="position" content="1" /></li></ol>',
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html_list))
     # last crumb not linked
-    assert_equal('<div itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">name</span></div>',
-                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html, :last_crumb_linked => false))
+    assert_equal('<ol class="" itemscope="itemscope" itemtype="http://schema.org/BreadcrumbList"><li class="first last" itemscope="itemscope" itemtype="http://schema.org/ListItem" itemprop="itemListElement"><span itemprop="name">name</span><meta itemprop="position" content="1" /></li></ol>',
+                 renderer.render_crumbs([['name', 'url']], :first_class => 'first', :last_class => 'last', :format => :html_list, :last_crumb_linked => false))
   end
 
 end
