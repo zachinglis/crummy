@@ -1,5 +1,5 @@
 PATH
-  remote: ../
+  remote: ..
   specs:
     crummy (1.7.1)
 
@@ -62,7 +62,7 @@ GEM
     mime-types (1.17.2)
     multi_json (1.0.3)
     polyglot (0.3.3)
-    rack (1.3.5)
+    rack (1.3.10)
     rack-cache (1.1)
       rack (>= 0.4)
     rack-mount (0.8.3)
