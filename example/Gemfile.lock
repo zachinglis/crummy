@@ -1,5 +1,5 @@
 PATH
-  remote: ../
+  remote: ..
   specs:
     crummy (1.7.1)
 
@@ -119,7 +119,7 @@ GEM
       polyglot (>= 0.3.1)
     turn (0.8.3)
       ansi
-    tzinfo (0.3.30)
+    tzinfo (0.3.61)
     uglifier (1.0.4)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
