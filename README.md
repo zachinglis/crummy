@@ -1,3 +1,6 @@
+> **Warning**
+> This is no longer maintained and hasn't been for quite some time. I no longer spend any time in the Ruby world. If you would like to maintain it, do reach out and ask.
+
 # Crummy
 
 [![Gem Version](https://badge.fury.io/rb/crummy.png)](http://badge.fury.io/rb/crummy)
