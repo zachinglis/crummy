@@ -3,7 +3,7 @@ module ApplicationHelper
     if @page_title
       "Crummy Test - #{@page_title}"
     else
-      "Crummy Test"
+      'Crummy Test'
     end
   end
 end

@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  add_crumb "Posts", :posts_url, :except => [:new]
+  add_crumb 'Posts', :posts_url, except: [:new]
 
   def index
     @posts = Post.all
@@ -7,13 +7,13 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find params[:id]
-    
+
     @post.categories.each do |category|
-      add_crumb category.title, "#"
+      add_crumb category.title, '#'
     end
   end
-  
+
   def new
-    add_crumb "Forever Alone"
+    add_crumb 'Forever Alone'
   end
 end

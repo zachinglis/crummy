@@ -14,7 +14,7 @@ Crummy is a simple and tasty way to add breadcrumbs to your Rails applications.
 Simply add the dependency to your Gemfile:
 
 ```ruby
-gem "crummy", "~> 1.8.0"
+gem "crummy", "~> 2.0.0" # "~> 1.8.0" for ruby < 2.0
 ```
 
 # Example
@@ -30,7 +30,7 @@ end
 class BusinessController < ApplicationController
   add_crumb("Businesses") { |instance| instance.send :businesses_path }
   add_crumb("Comments", only: "comments") { |instance| instance.send :businesses_comments_path }
-  before_filter :load_comment, only: "show"
+  before_action :load_comment, only: "show"
   add_crumb :comment, only: "show"
 
   # Example for nested routes:
@@ -183,7 +183,7 @@ See `lib/crummy.rb` for a list of these parameters and their defaults.
 ```ruby
 add_crumb support_link, {:right_side => true, :links => "/support", : li_class => "my_class", :li_right_class => "pull-right hidden-phone"}
 ```
-Simple add that parameter to options hash. 
+Simple add that parameter to options hash.
 
 
 ## Live example application
@@ -195,7 +195,7 @@ An example application is available right inside this gem. That application is d
 -   Accept collections of models as a single argument
 -   Accept instances of models as a single argument
 -   Allow for variables in names. (The workaround is to do your own
-    before\_filter for that currently)
+    before_filter for that currently)
 -   Make a crumbs? type method
 
 ## Credits

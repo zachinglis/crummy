@@ -1,5 +1,4 @@
 module Crummy
-
   def self.configuration
     @configuration ||= Configuration.new
   end
@@ -30,10 +29,10 @@ module Crummy
 
     def initialize
       @format = :html
-      @html_separator = " &raquo; ".html_safe
-      @html_right_separator = " &raquo; ".html_safe
-      @xml_separator = "crumb"
-      @xml_right_separator = "crumb"
+      @html_separator = ' &raquo; '.html_safe
+      @html_right_separator = ' &raquo; '.html_safe
+      @xml_separator = 'crumb'
+      @xml_right_separator = 'crumb'
       @html_list_separator = ''
       @html_list_right_separator = ''
       @skip_if_blank = true
@@ -49,7 +48,7 @@ module Crummy
       @right_side = false
     end
 
-    def active_li_class=(class_name)
+    def active_li_class=(_class_name)
       puts "CRUMMY: The 'active_li_class' option is DEPRECATED and will be removed from a future version"
     end
 
